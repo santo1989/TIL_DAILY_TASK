@@ -39,8 +39,26 @@ class ComeBackReportController extends Controller
 
     public function index()
     {
-        $reports = ComeBackReport::latest('report_date')->paginate(20);
-        return view('backend.library.comeback-reports.index', compact('reports'));
+        // floor and employee_id search have data then search or else show all
+        $query = ComeBackReport::query();
+        if (request('floor')) {
+            $query->where('floor', request('floor'));
+        }
+        if (request('employee_id')) {
+            $query->where('employee_id', request('employee_id'));
+        }
+        if (request('floor') && request('employee_id')) {
+            $query->where('floor', request('floor'))
+                ->where('employee_id', request('employee_id'));
+        }
+        $reports = $query->latest('report_date')->paginate(20);
+        $reports->appends(request()->query());
+
+        $floors = request('floor') ? request('floor') : null;
+        $employee_ids = request('employee_id') ? request('employee_id') : null;
+
+        // $reports = ComeBackReport::latest('report_date')->paginate(20);
+        return view('backend.library.comeback-reports.index', compact('reports', 'floors', 'employee_ids'));
     }
 
     /**

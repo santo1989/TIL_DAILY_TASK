@@ -39,7 +39,7 @@
             <div class="card-header">
                 <div class="row">
                     {{-- <h5 class="text-center" >Existing Attendance Records</h5> --}}
-                    <div class="col-md-6">
+                    <div class="col-md-12">
 
                         <!--back button-->
                         <a href="{{ route('home') }}" class="btn btn-secondary">
@@ -47,11 +47,27 @@
                         </a>
                         <!--add button-->
                         <a href="" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Add  Come Back Reports
+                            <i class="fas fa-plus"></i> Add Data
                         </a>
+                        <form action="{{ route('comeback.reports') }}" method="GET" class="form-inline" style="margin-left: 20px; display: inline-block;">
+                            <select name="floor" class="form-control mr-2" onchange="this.form.submit()">
+                                <option value="">Select Floor</option>
+                                <option value="1" {{ request('floor') == '1' ? 'selected' : '' }}>1st Floor</option>
+                                <option value="3" {{ request('floor') == '3' ? 'selected' : '' }}>3rd Floor</option>
+                                <option value="4" {{ request('floor') == '4' ? 'selected' : '' }}>4th Floor</option>
+                                <option value="5" {{ request('floor') == '5' ? 'selected' : '' }}>5th Floor</option>
+                            </select>
+                            <input type="text" name="employee_id" class="form-control mr-2" placeholder="Search by Employee ID or Name" value="{{ request('employee_id') }}">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i> Search
+                            </button>
+                            <a href="{{ route('comeback.reports') }}" class="btn btn-secondary ml-2">
+                                <i class="fas fa-sync"></i> Reset
+                            </a>
+                        </form>
 
-                    </div>
-                    <div class="col-md-6">
+                    {{-- </div>
+                    <div class="col-md-3"> --}}
                         <!--modal trigger button for download and upload excel file -->
                         <a type="button" class="btn btn-success"
                             href="{{ route('comeback.reports.download.template') }}">
@@ -70,6 +86,7 @@
                     <table class="table table-bordered table-striped">
                         <thead class="thead-dark">
                             <tr>
+                                <th>SL</th>
                                 <th>Report Date</th>
                                 <th>Employee ID</th>
                                 <th>Name</th>
@@ -84,6 +101,7 @@
                         <tbody>
                             @forelse($reports as $report)
                             <tr>
+                                <td>{{ $loop->iteration + ($reports->currentPage() - 1) * $reports->perPage() }}</td>
                                 <td>{{ $report->report_date }}</td>
                                 <td>{{ $report->employee_id }}</td>
                                 <td>{{ $report->name }}</td>

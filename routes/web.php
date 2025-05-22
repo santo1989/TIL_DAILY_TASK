@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceReportController;
 use App\Http\Controllers\AttendanceSummaryController;
 use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\ComeBackReportController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OperatorAbsentAnalysisController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
@@ -210,6 +212,26 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/edit', [ComeBackReportController::class, 'edit'])->name('comeback.reports.edit');
         Route::put('/{id}', [ComeBackReportController::class, 'update'])->name('comeback.reports.update');
         Route::delete('/{id}', [ComeBackReportController::class, 'destroy'])->name('comeback.reports.destroy');
+    });
+
+    Route::prefix('operator-absent-analysis')->group(function () {
+        Route::get('/', [OperatorAbsentAnalysisController::class, 'index'])->name('operator-absent-analysis.index');
+        // operator - absent - analysis . download . template
+        Route::get('/download-template', [OperatorAbsentAnalysisController::class, 'downloadTemplate'])->name('operator-absent-analysis.download.template');
+        Route::post('/upload', [OperatorAbsentAnalysisController::class, 'upload'])->name('operator-absent-analysis.upload');
+        Route::get('/{id}/edit', [OperatorAbsentAnalysisController::class, 'edit'])->name('operator-absent-analysis.edit');
+        Route::put('/{id}', [OperatorAbsentAnalysisController::class, 'update'])->name('operator-absent-analysis.update');
+        Route::delete('/{id}', [OperatorAbsentAnalysisController::class, 'destroy'])->name('operator-absent-analysis.destroy');
+    });
+
+    Route::prefix('attendance-reports')->group(function () {
+        Route::get('/', [AttendanceReportController::class, 'index'])->name('attendance-reports.index');
+        //attendance-reports.download.template
+        Route::get('/download-template', [AttendanceReportController::class, 'downloadTemplate'])->name('attendance-reports.download.template');
+        Route::post('/upload', [AttendanceReportController::class, 'upload'])->name('attendance-reports.upload');
+        Route::get('/{report}/edit', [AttendanceReportController::class, 'edit'])->name('attendance-reports.edit');
+        Route::put('/{report}', [AttendanceReportController::class, 'update'])->name('attendance-reports.update');
+        Route::delete('/{report}', [AttendanceReportController::class, 'destroy'])->name('attendance-reports.destroy');
     });
 
 

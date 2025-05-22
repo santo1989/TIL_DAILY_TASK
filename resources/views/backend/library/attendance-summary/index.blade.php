@@ -39,7 +39,7 @@
             <div class="card-header">
                 <div class="row">
                     {{-- <h5 class="text-center" >Existing Attendance Records</h5> --}}
-                    <div class="col-md-6">
+                    <div class="col-md-12">
 
                         <!--back button-->
                         <a href="{{ route('home') }}" class="btn btn-secondary">
@@ -47,11 +47,11 @@
                         </a>
                         <!--add button-->
                         <a href="" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Add Attendance Record
+                            <i class="fas fa-plus"></i> Add Record
                         </a>
 
-                    </div>
-                    <div class="col-md-6">
+                    {{-- </div>
+                    <div class="col-md-6"> --}}
                         <!--modal trigger button for download and upload excel file -->
                         <a type="button" class="btn btn-success"
                             href="{{ route('attendance.summary.download.template') }}">
@@ -70,6 +70,7 @@
                     <table class="table table-bordered table-striped">
                         <thead class="thead-dark">
                             <tr>
+                                <th>Sl</th>
                                 <th>Report Date</th>
                                 <th>Floor</th>
                                 <th>Onroll</th>
@@ -83,7 +84,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Today Total</td>
+                                <td colspan="2">Today Total</td>
                                 <td>-</td>
                                 <td>{{ number_format($todayTotal['onroll']) ?? '-' }}</td>
                                 <td>{{ number_format($todayTotal['present']) ?? '-' }}</td>
@@ -95,6 +96,7 @@
                             </tr>
                             @forelse($attendanceData as $record)
                                 <tr>
+                                    <td>{{ $loop->iteration + ($attendanceData->currentPage() - 1) * $attendanceData->perPage() }}</td>
                                     <td>{{ $record->report_date->format('Y-m-d') }}</td>
                                     <td>{{ $record->floor }}</td>
                                     <td>{{ number_format($record->onroll) }}</td>
@@ -121,7 +123,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="text-center">No attendance records found</td>
+                                    <td colspan="9" class="text-center">No attendance records found</td>
                                 </tr>
                             @endforelse
                         </tbody>

@@ -90,12 +90,7 @@
                                         Buyer Management
                                     </a>
                                 </div>
-                                <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;" href=" ">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                        Other Management
-                                    </a>
-                                </div>
+                              
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                         href="{{ route('roles.index') }}">
@@ -144,6 +139,18 @@
                                         Come Back Reports
                                     </a>
 
+                                </div>
+                                <div class="col-3 pt-1 pb-1">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;" href="{{ route('operator-absent-analysis.index') }}">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                        Operator Absent Analysis
+                                    </a>
+                                </div>
+                                <div class="col-3 pt-1 pb-1">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;" href="{{ route('attendance-reports.index') }}">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                        Attendance Reports
+                                    </a>
                                 </div>
                             </div>
                         @endcan
