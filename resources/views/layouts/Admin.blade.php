@@ -152,6 +152,40 @@
                                         Attendance Reports
                                     </a>
                                 </div>
+
+                                <div class="col-3 pt-1 pb-1">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;" href="{{ route('recruitment-summaries.index') }}">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                        Recruitment Summary
+                                    </a>
+                                </div>
+                                <div class="col-3 pt-1 pb-1">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;" href="{{ route('operation-details.index') }}">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                        Operation Details
+                                    </a>
+                                </div>
+
+                                <div class="col-3 pt-1 pb-1">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;" href="{{ route('ot-achievements.index') }}">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                        OT Achievements
+                                    </a>
+                                </div>
+                                <div class="col-3 pt-1 pb-1">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;" href="{{ route('floor-timings.index') }}">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                        Floor Timings
+                                    </a>
+                                </div>
+                                <div class="col-3 pt-1 pb-1">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;" href="{{ route('daily-reports.index') }}">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                        Shipment Status, DHU Report, Others
+                                    </a>
+                                </div>
+
+
                             </div>
                         @endcan
 

@@ -5,11 +5,16 @@ use App\Http\Controllers\AttendanceSummaryController;
 use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\ComeBackReportController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\DailyReportController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\DivisionController;
+use App\Http\Controllers\FloorTimingController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OperationDetailController;
 use App\Http\Controllers\OperatorAbsentAnalysisController;
+use App\Http\Controllers\OtAchievementController;
+use App\Http\Controllers\RecruitmentSummaryController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
@@ -24,6 +29,10 @@ use Illuminate\Support\Facades\Route;
 
 // });
 
+
+Route::get('/todayReport', [DailyReportController::class, 'todayReport'])->name('todayReport');
+//todayGraph
+Route::get('/todayGraph', [DailyReportController::class, 'todayGraph'])->name('todayGraph');
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -176,11 +185,9 @@ Route::middleware('auth')->group(function () {
     ])->name('planning_data_timeEntry_copy');
 
     //report
-    Route::post('/generateReport', [PlanningDataController::class, 'generateReport'])->name('generateReport');
+    // Route::post('/generateReport', [PlanningDataController::class, 'generateReport'])->name('generateReport');
 
-    Route::get('/todayReport', [PlanningDataController::class, 'todayReport'])->name('todayReport');
-    //todayGraph
-    Route::get('/todayGraph', [PlanningDataController::class, 'todayGraph'])->name('todayGraph');
+  
 
     Route::prefix('attendance')->group(function () {
         Route::get('/summary', [AttendanceSummaryController::class, 'index'])
@@ -234,8 +241,52 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{report}', [AttendanceReportController::class, 'destroy'])->name('attendance-reports.destroy');
     });
 
+    Route::prefix('recruitment-summaries')->group(function () {
+        Route::get('/', [RecruitmentSummaryController::class, 'index'])->name('recruitment-summaries.index');
+        Route::get('/download-template', [RecruitmentSummaryController::class, 'downloadTemplate'])->name('recruitment-summaries.download.template');
+        Route::post('/upload', [RecruitmentSummaryController::class, 'upload'])->name('recruitment-summaries.upload');
+        Route::get('/{summary}/edit', [RecruitmentSummaryController::class, 'edit'])->name('recruitment-summaries.edit');
+        Route::put('/{summary}', [RecruitmentSummaryController::class, 'update'])->name('recruitment-summaries.update');
+        Route::delete('/{summary}', [RecruitmentSummaryController::class, 'destroy'])->name('recruitment-summaries.destroy');
+    });
 
+    Route::prefix('operation-details')->group(function () {
+        Route::get('/', [OperationDetailController::class, 'index'])->name('operation-details.index');
+        Route::get('/download-template', [OperationDetailController::class, 'downloadTemplate'])->name('operation-details.download.template');
+        Route::post('/upload', [OperationDetailController::class, 'upload'])->name('operation-details.upload');
+        Route::get('/{detail}/edit', [OperationDetailController::class, 'edit'])->name('operation-details.edit');
+        Route::put('/{detail}', [OperationDetailController::class, 'update'])->name('operation-details.update');
+        Route::delete('/{detail}', [OperationDetailController::class, 'destroy'])->name('operation-details.destroy');
+    });
 
+    Route::prefix('ot-achievements')->group(function () {
+        Route::get('/', [OtAchievementController::class, 'index'])->name('ot-achievements.index');
+        Route::get('/download-template', [OtAchievementController::class, 'downloadTemplate'])->name('ot-achievements.download.template');
+        Route::post('/upload', [OtAchievementController::class, 'upload'])->name('ot-achievements.upload');
+        Route::get('/{achievement}/edit', [OtAchievementController::class, 'edit'])->name('ot-achievements.edit');
+        Route::put('/{achievement}', [OtAchievementController::class, 'update'])->name('ot-achievements.update');
+        Route::delete('/{achievement}', [OtAchievementController::class, 'destroy'])->name('ot-achievements.destroy');
+    });
+
+    // routes/web.php
+
+    Route::prefix('floor-timings')->group(function () {
+        Route::get('/', [FloorTimingController::class, 'index'])->name('floor-timings.index');
+        Route::get('/download-template', [FloorTimingController::class, 'downloadTemplate'])->name('floor-timings.download.template');
+        Route::post('/upload', [FloorTimingController::class, 'upload'])->name('floor-timings.upload');
+        Route::get('/{timing}/edit', [FloorTimingController::class, 'edit'])->name('floor-timings.edit');
+        Route::put('/{timing}', [FloorTimingController::class, 'update'])->name('floor-timings.update');
+        Route::delete('/{timing}', [FloorTimingController::class, 'destroy'])->name('floor-timings.destroy');
+    });
+
+    Route::prefix('daily-reports')->group(function () {
+        Route::get('/', [DailyReportController::class, 'index'])->name('daily-reports.index');
+        Route::get('/create', [DailyReportController::class, 'create'])->name('daily-reports.create');
+        Route::post('/', [DailyReportController::class, 'store'])->name('daily-reports.store');
+        Route::get('/{report}/edit', [DailyReportController::class, 'edit'])->name('daily-reports.edit');
+        Route::put('/{report}', [DailyReportController::class, 'update'])->name('daily-reports.update');
+        Route::delete('/{report}', [DailyReportController::class, 'destroy'])->name('daily-reports.destroy');
+    });
 
 
 

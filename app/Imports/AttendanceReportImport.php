@@ -5,19 +5,21 @@ namespace App\Imports;
 use App\Models\AttendanceReport;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Log;
+// use Illuminate\Support\Facades\Date;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
 class AttendanceReportImport implements ToCollection, WithHeadingRow, WithValidation
 {
-protected $reportDate;
+    protected $reportDate;
 
-public function __construct($reportDate = null)
-{
-$this->reportDate = $reportDate ?: now()->format('Y-m-d');
-}
+    public function __construct($reportDate = null)
+    {
+        $this->reportDate = $reportDate ?: now()->format('Y-m-d');
+    }
 
     // public function collection(Collection $rows)
     // {
@@ -55,13 +57,66 @@ $this->reportDate = $reportDate ?: now()->format('Y-m-d');
 
     public function rules(): array
     {
-    return [
-    'id' => 'required',
-    'name' => 'required',
-    'designation' => 'required',
-    'type' => 'required|in:Lunch Out,Late Comer,To be Absent,On Leave'
-    ];
+        return [
+            'id' => 'required',
+            'name' => 'required',
+            'designation' => 'required',
+            'type' => 'required|in:Lunch Out,Late Comer,To be Absent,On Leave'
+        ];
     }
+
+    // private function parseTime($value)
+    // {
+    //     if (empty(trim($value))) {
+    //         return null;
+    //     }
+
+    //     try {
+    //         // Handle Excel numeric timestamp (e.g., 0.5 = 12:00:00)
+    //         if (is_numeric($value)) {
+    //             $dateTime = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value);
+    //             return Carbon::instance($dateTime)->format('H:i:s'); // Format to 24-hour time
+    //         }
+
+    //         // Clean and parse string time values
+    //         $value = trim(str_replace(["\xc2\xa0", "\u{200E}", "\u{200F}"], ' ', $value));
+    //         $value = preg_replace('/\s+/', ' ', $value);
+
+    //         // Parse time formats (e.g., "09:20:00" or "9:20 AM")
+    //         $formats = ['H:i:s', 'H:i', 'g:i A', 'g:i:s A'];
+    //         foreach ($formats as $format) {
+    //             try {
+    //                 $time = Carbon::createFromFormat($format, $value);
+    //                 return $time->format('H:i:s'); // Force 24-hour format
+    //             } catch (\Exception $e) {
+    //                 continue;
+    //             }
+    //         }
+
+    //         // Fallback for formats like "9.20 AM"
+    //         if (preg_match('/(\d+)[.:](\d+)(?:[.:](\d+))?\s*(AM|PM)?/i', $value, $matches)) {
+    //             $hour = (int)$matches[1];
+    //             $minute = (int)$matches[2];
+    //             $second = $matches[3] ?? 0;
+    //             $period = strtoupper($matches[4] ?? '');
+
+    //             if ($period === 'PM' && $hour < 12) $hour += 12;
+    //             if ($period === 'AM' && $hour == 12) $hour = 0;
+
+    //             return Carbon::createFromTime($hour, $minute, $second)->format('H:i:s');
+    //         }
+
+    //         return null;
+    //     } catch (\Exception $e) {
+    //         \Log::error("Time parsing failed: " . $e->getMessage());
+    //         return null;
+    //     }
+    // }
+
+
+
+
+
 
     // private function parseTime($value)
     // {
@@ -83,40 +138,59 @@ $this->reportDate = $reportDate ?: now()->format('Y-m-d');
     //             }
     //         }
 
-    //         // Fallback to current time if parsing fails
-    //         return now();
+    //         // Fallback to null if parsing fails
+    //         return null;
     //     } catch (\Exception $e) {
-    //         // Log error and return null
-    //         // \log::error("Time parsing failed for value: {$value}", ['error' => $e]);
-    //         // return null;
+    //         // \Log::error("Time parsing failed for value: {$value}", ['error' => $e]);
+    //         return null;
     //     }
     // }
 
 
     private function parseTime($value)
     {
+        if (empty(trim($value))) {
+            return null;
+        }
+
         try {
-            // Handle Excel timestamp values
+            // Handle Excel numeric timestamp (e.g., 0.51388888888889 = 12:20:00 PM)
             if (is_numeric($value)) {
-                return Carbon::instance(Date::excelToDateTimeObject($value));
+                $dateTime = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value);
+                return Carbon::instance($dateTime)->format('h:i:s A'); // 12-hour format with AM/PM
             }
 
-            // Clean and normalize time strings
-            $cleaned = preg_replace('/[^0-9:]/', '', $value);
+            // Clean and parse string time values
+            $value = trim(str_replace(["\xc2\xa0", "\u{200E}", "\u{200F}"], ' ', $value));
+            $value = preg_replace('/\s+/', ' ', $value);
 
-            // Try different time formats
-            foreach (['H:i:s', 'H:i', 'g:i A', 'g:i:s A'] as $format) {
+            // Parse time formats (e.g., "09:20:00 AM" or "9:20 PM")
+            $formats = ['h:i:s A', 'h:i A', 'g:i A', 'g:i:s A'];
+            foreach ($formats as $format) {
                 try {
-                    return Carbon::createFromFormat($format, $cleaned);
+                    $time = Carbon::createFromFormat($format, $value);
+                    return $time->format('h:i:s A'); // Force 12-hour format
                 } catch (\Exception $e) {
                     continue;
                 }
             }
 
-            // Fallback to null if parsing fails
+            // Fallback for formats like "12.20 PM"
+            if (preg_match('/(\d+)[.:](\d+)(?:[.:](\d+))?\s*(AM|PM)?/i', $value, $matches)) {
+                $hour = (int)$matches[1];
+                $minute = (int)$matches[2];
+                $second = $matches[3] ?? 0;
+                $period = strtoupper($matches[4] ?? '');
+
+                if ($period === 'PM' && $hour < 12) $hour += 12;
+                if ($period === 'AM' && $hour == 12) $hour = 0;
+
+                return Carbon::createFromTime($hour, $minute, $second)->format('h:i:s A');
+            }
+
             return null;
         } catch (\Exception $e) {
-            // \Log::error("Time parsing failed for value: {$value}", ['error' => $e]);
+            \Log::error("Time parsing failed: " . $e->getMessage());
             return null;
         }
     }
@@ -132,6 +206,11 @@ $this->reportDate = $reportDate ?: now()->format('Y-m-d');
         ];
 
         return $typeMap[$type] ?? 'other';
+    }
+
+    private function cleanValue($value)
+    {
+        return is_string($value) ? trim(preg_replace('/\s+/', ' ', $value)) : $value;
     }
 
     // public function collection(Collection $rows)
@@ -164,36 +243,38 @@ $this->reportDate = $reportDate ?: now()->format('Y-m-d');
     {
         foreach ($rows as $row) {
             try {
-                $inTime = null;
-                if (isset($row['in_time'])) {
-                    $parsedTime = $this->parseTime($row['in_time']);
-                    $inTime = $parsedTime ? $parsedTime->format('H:i:s') : null;
-                }
+                $inTime = isset($row['in_time']) && !empty(trim($row['in_time']))
+                    ? $this->parseTime($row['in_time'])
+                    : null;
 
-                AttendanceReport::create([
+
+                $existingReport = AttendanceReport::where('report_date', Carbon::parse($this->reportDate))
+                    ->where('employee_id', $this->cleanValue($row['id']))
+                    ->first();
+
+                $data = [
                     'type' => $this->determineType($row),
                     'report_date' => Carbon::parse($this->reportDate),
                     'employee_id' => $this->cleanValue($row['id']),
                     'name' => $this->cleanValue($row['name']),
                     'designation' => $this->cleanValue($row['designation']),
                     'floor' => $this->cleanValue($row['floor'] ?? null),
-                    'in_time' => $inTime, // Use formatted time string
+                    'in_time' => $inTime, // Already formatted as "H:i:s"
                     'reason' => $this->cleanValue(
-                        $row['reason_of_leave'] ??
-                            $row['reason_of_lunch_out'] ??
-                            null
+                        $row['reason_of_leave'] ?? $row['reason_of_lunch_out'] ?? null
                     ),
                     'remarks' => $this->cleanValue($row['remarks'] ?? null)
-                ]);
+                ];
+
+                if ($existingReport) {
+                    $existingReport->update($data);
+                } else {
+                    AttendanceReport::create($data);
+                }
             } catch (\Exception $e) {
-                // \Log::error("Error importing row: " . json_encode($row), ['error' => $e]);
+                \Log::error("Error processing row: " . $e->getMessage());
                 continue;
             }
         }
-    }
-    
-    private function cleanValue($value)
-    {
-        return is_string($value) ? trim(preg_replace('/\s+/', ' ', $value)) : $value;
     }
 }

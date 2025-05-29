@@ -16,13 +16,13 @@ class AttendanceReport extends Model
         'name',
         'designation',
         'floor',
-        'in_time',
+        'in_time', // Add this
         'reason',
         'remarks'
     ];
 
     protected $casts = [
         'report_date' => 'date:Y-m-d',
-        'in_time' => 'datetime:H:i:s'
+        'in_time' => 'string',
     ];
 }

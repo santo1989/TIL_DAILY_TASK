@@ -21,7 +21,7 @@ class CreateAttendanceReportsTable extends Migration
             $table->string('name')->nullable()->index();
             $table->string('designation')->nullable()->index();
             $table->string('floor')->nullable()->index();
-            $table->time('in_time')->nullable()->index();
+            $table->string('in_time')->nullable()->index();
             $table->string('reason')->nullable()->index();
             $table->text('remarks')->nullable();
             $table->timestamps();

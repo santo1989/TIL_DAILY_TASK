@@ -14,7 +14,8 @@
         "laravel/sanctum": "2.15.1",
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "^3.1",
-        "myclabs/php-enum": "^1.8"
+        "myclabs/php-enum": "^1.8",
+        "phpoffice/phpspreadsheet": "^1.29"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
