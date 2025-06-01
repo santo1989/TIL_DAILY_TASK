@@ -194,4 +194,27 @@ class DailyReportController extends Controller
             'reportDate' => $today
         ]);
     }
+
+    public function Report()
+    {
+        //if filter by report date is provided, use it; otherwise, use today's date
+        $reportDate = request('report_date');
+        if ($reportDate) {
+            $today = $reportDate;
+        } else {
+            $today = now()->format('Y-m-d');
+        }
+
+        return view('report', [
+            'attendanceSummary' => AttendanceSummary::where('report_date', $today)->get(),
+            'comeBackReports' => ComeBackReport::where('report_date', $today)->get(),
+            'absentAnalyses' => OperatorAbsentAnalysis::where('report_date', $today)->get(),
+            'attendanceReports' => AttendanceReport::where('report_date', $today)->get(),
+            'recruitmentSummary' => RecruitmentSummary::whereDate('interview_date', $today)->get(),
+            'operationDetails' => OperationDetail::where('report_date', $today)->get(),
+            'otAchievements' => OtAchievement::where('report_date', $today)->get(),
+            'dailyReport' => DailyReport::where('report_date', $today)->first(),
+            'reportDate' => $today
+        ]);
+    }
 }

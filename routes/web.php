@@ -33,6 +33,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/todayReport', [DailyReportController::class, 'todayReport'])->name('todayReport');
 //todayGraph
 Route::get('/todayGraph', [DailyReportController::class, 'todayGraph'])->name('todayGraph');
+
+Route::get('/Report', [DailyReportController::class, 'Report'])->name('Report');
 Route::get('/', function () {
     return view('auth.login');
 });

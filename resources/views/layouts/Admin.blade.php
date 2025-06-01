@@ -191,7 +191,7 @@
 
 
                         @can('General')
-                            <div class="row justify-content-center">
+                            {{-- <div class="row justify-content-center">
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                         href="{{ route('planning_data.index') }}">
@@ -201,10 +201,10 @@
 
                                 </div>
 
-                            </div>
+                            </div> --}}
                         @endcan
                         @can('QC')
-                            <div class="row justify-content-center">
+                            {{-- <div class="row justify-content-center">
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                         href="{{ route('planning_data.index') }}">
@@ -214,10 +214,10 @@
 
                                 </div>
 
-                            </div>
+                            </div> --}}
                         @endcan
                         @can('Supervisor')
-                            <div class="row justify-content-center">
+                            {{-- <div class="row justify-content-center">
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                         href="{{ route('planning_data.index') }}">
@@ -227,7 +227,7 @@
 
                                 </div>
 
-                            </div>
+                            </div> --}}
                         @endcan
                     </div>
                 </div>
@@ -254,6 +254,14 @@
                                     href="{{ route('todayGraph') }} " target="_blank">
                                     <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                                     Dashboard
+                                </a>
+
+                            </div>
+                            <div class="col-3 pt-1 pb-1">
+                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                    href="{{ route('Report') }} " target="_blank">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                    Today Report
                                 </a>
 
                             </div>
