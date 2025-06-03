@@ -240,7 +240,7 @@
 
                     <div class="card-body">
                         <div class="row justify-content-center">
-                            <div class="col-3 pt-1 pb-1">
+                            {{-- <div class="col-3 pt-1 pb-1">
                                 <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                     href="{{ route('todayReport') }} " target="_blank">
                                     <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
@@ -256,7 +256,7 @@
                                     Dashboard
                                 </a>
 
-                            </div>
+                            </div> --}}
                             <div class="col-3 pt-1 pb-1">
                                 <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                     href="{{ route('Report') }} " target="_blank">
