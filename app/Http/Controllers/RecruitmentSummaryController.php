@@ -64,7 +64,7 @@ class RecruitmentSummaryController extends Controller
 
     public function downloadTemplate()
     {
-        $filePath = public_path('templates/Recruitment_Summary_Interview.xls');
+        $filePath = public_path('downloads/Recruitment_Summary_Interview.xls');
         return response()->download($filePath);
     }
 

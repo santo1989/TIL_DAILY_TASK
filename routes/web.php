@@ -236,7 +236,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('attendance-reports')->group(function () {
         Route::get('/', [AttendanceReportController::class, 'index'])->name('attendance-reports.index');
         //attendance-reports.download.template
-        Route::get('/download-template', [AttendanceReportController::class, 'downloadTemplate'])->name('attendance-reports.download.template');
+        Route::get('/download-template', [AttendanceReportController::class, 'Attendance_Reports_Lunch_Late_Absen_LeavedownloadTemplate'])->name('attendance-reports.download.template');
         Route::post('/upload', [AttendanceReportController::class, 'upload'])->name('attendance-reports.upload');
         Route::get('/{report}/edit', [AttendanceReportController::class, 'edit'])->name('attendance-reports.edit');
         Route::put('/{report}', [AttendanceReportController::class, 'update'])->name('attendance-reports.update');

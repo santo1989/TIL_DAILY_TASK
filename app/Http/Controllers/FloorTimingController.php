@@ -43,7 +43,7 @@ class FloorTimingController extends Controller
 
     public function downloadTemplate()
     {
-        $filePath = public_path('templates\Floor_Starting_Clossing_Time.xlsx');
+        $filePath = public_path('downloads\Floor_Starting_Clossing_Time.xlsx');
         return response()->download($filePath);
     }
 

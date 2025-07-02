@@ -43,7 +43,7 @@ class OtAchievementController extends Controller
 
     public function downloadTemplate()
     {
-        $filePath = public_path('templates/ot-achievement-template.xlsx');
+        $filePath = public_path('downloads/ot-achievement-template.xlsx');
         return response()->download($filePath);
     }
 

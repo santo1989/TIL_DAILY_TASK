@@ -51,9 +51,9 @@ class AttendanceReportController extends Controller
         return back()->with('success', 'Reports imported successfully');
     }
     // downloadTemplate
-    public function downloadTemplate()
+    public function Attendance_Reports_Lunch_Late_Absen_LeavedownloadTemplate()
     {
-        $filePath = public_path('downloads/2. Come Back Report.xls');
+        $filePath = public_path('downloads/Attendance_Reports_Lunch_Late_Absen_Leave.xls');
 
         if (file_exists($filePath)) {
             return response()->download($filePath);

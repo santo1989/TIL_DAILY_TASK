@@ -38,7 +38,7 @@ class OperationDetailController extends Controller
 
     public function downloadTemplate()
     {
-        $filePath = public_path('templates/operation_details_template.xlsx');
+        $filePath = public_path('downloads/operation_details_template.xlsx');
         return response()->download($filePath);
     }
 
