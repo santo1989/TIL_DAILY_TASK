@@ -19,6 +19,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PlanningDataController;
+use App\Http\Controllers\ReportController;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -29,12 +30,6 @@ use Illuminate\Support\Facades\Route;
 
 // });
 
-
-Route::get('/todayReport', [DailyReportController::class, 'todayReport'])->name('todayReport');
-//todayGraph
-Route::get('/todayGraph', [DailyReportController::class, 'todayGraph'])->name('todayGraph');
-
-Route::get('/Report', [DailyReportController::class, 'Report'])->name('Report');
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -294,7 +289,15 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::get('/todayReport', [ReportController::class, 'todayReport'])->name('todayReport');
+//todayGraph
+Route::get('/todayGraph', [ReportController::class, 'todayGraph'])->name('todayGraph');
 
+Route::get('/Report', [ReportController::class, 'Report'])->name('Report');
+
+Route::get('/dashboard/full', [ReportController::class, 'fullDashboard'])->name('dashboard.full');
+Route::get('/dashboard/summary', [ReportController::class, 'summaryDashboard'])->name('dashboard.summary');
+Route::get('/dashboard/graphical', [ReportController::class, 'graphicalDashboard'])->name('dashboard.graphical');
 
 
 
