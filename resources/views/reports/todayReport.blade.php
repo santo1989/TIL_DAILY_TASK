@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,25 +18,25 @@
             --dark: #34495e;
             --gray: #95a5a6;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
             background-color: #f5f7fa;
             color: #333;
             padding: 20px;
         }
-        
+
         .dashboard {
             max-width: 1400px;
             margin: 0 auto;
         }
-        
+
         .header {
             display: flex;
             justify-content: space-between;
@@ -44,12 +45,12 @@
             border-bottom: 2px solid var(--primary);
             margin-bottom: 25px;
         }
-        
+
         .header h1 {
             color: var(--primary);
             font-size: 28px;
         }
-        
+
         .report-date {
             background: var(--primary);
             color: white;
@@ -57,14 +58,14 @@
             border-radius: 20px;
             font-weight: 600;
         }
-        
+
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             margin-bottom: 25px;
         }
-        
+
         .card {
             background: white;
             border-radius: 10px;
@@ -72,12 +73,12 @@
             padding: 20px;
             transition: transform 0.3s ease;
         }
-        
+
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
         }
-        
+
         .card-header {
             display: flex;
             justify-content: space-between;
@@ -86,13 +87,13 @@
             padding-bottom: 10px;
             border-bottom: 1px solid #eee;
         }
-        
+
         .card-title {
             font-size: 18px;
             font-weight: 600;
             color: var(--primary);
         }
-        
+
         .card-icon {
             width: 40px;
             height: 40px;
@@ -103,64 +104,65 @@
             background: rgba(52, 152, 219, 0.1);
             color: var(--secondary);
         }
-        
+
         .kpi-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             margin-bottom: 20px;
         }
-        
+
         .kpi-card {
             background: #f8f9fa;
             border-radius: 8px;
             padding: 12px;
             text-align: center;
         }
-        
+
         .kpi-value {
             font-size: 24px;
             font-weight: 700;
             margin: 5px 0;
         }
-        
+
         .kpi-label {
             font-size: 13px;
             color: var(--gray);
             text-transform: uppercase;
         }
-        
+
         .chart-container {
             height: 250px;
             position: relative;
         }
-        
+
         .table-container {
             overflow-x: auto;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
         }
-        
-        th, td {
+
+        th,
+        td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #eee;
         }
-        
+
         th {
             background-color: #f8f9fa;
             color: var(--dark);
             font-weight: 600;
         }
-        
+
         tr:hover {
             background-color: #f5f7fa;
         }
-        
+
         .status-badge {
             display: inline-block;
             padding: 5px 10px;
@@ -168,54 +170,54 @@
             font-size: 12px;
             font-weight: 600;
         }
-        
+
         .badge-present {
             background: rgba(39, 174, 96, 0.15);
             color: var(--success);
         }
-        
+
         .badge-absent {
             background: rgba(231, 76, 60, 0.15);
             color: var(--danger);
         }
-        
+
         .badge-leave {
             background: rgba(52, 152, 219, 0.15);
             color: var(--secondary);
         }
-        
+
         .badge-late {
             background: rgba(243, 156, 18, 0.15);
             color: var(--warning);
         }
-        
+
         .progress-container {
             margin: 15px 0;
         }
-        
+
         .progress-bar {
             height: 8px;
             background: #e0e0e0;
             border-radius: 4px;
             overflow: hidden;
         }
-        
+
         .progress-fill {
             height: 100%;
             border-radius: 4px;
         }
-        
+
         .progress-label {
             display: flex;
             justify-content: space-between;
             margin-top: 5px;
             font-size: 12px;
         }
-        
+
         .full-width {
             grid-column: 1 / -1;
         }
-        
+
         .footer {
             text-align: center;
             padding: 20px;
@@ -224,36 +226,51 @@
             border-top: 1px solid #eee;
             margin-top: 20px;
         }
-        
-        .color-primary { color: var(--primary); }
-        .color-success { color: var(--success); }
-        .color-warning { color: var(--warning); }
-        .color-danger { color: var(--danger); }
-        .color-secondary { color: var(--secondary); }
-        
+
+        .color-primary {
+            color: var(--primary);
+        }
+
+        .color-success {
+            color: var(--success);
+        }
+
+        .color-warning {
+            color: var(--warning);
+        }
+
+        .color-danger {
+            color: var(--danger);
+        }
+
+        .color-secondary {
+            color: var(--secondary);
+        }
+
         @media (max-width: 768px) {
             .grid-container {
                 grid-template-columns: 1fr;
             }
-            
+
             .kpi-container {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
+
 <body>
     @php
-    // Set default empty values for all variables
-    $attendanceSummary = $attendanceSummary ?? collect();
-    $otAchievements = $otAchievements ?? collect();
-    $recruitmentSummary = $recruitmentSummary ?? collect();
-    $operationDetails = $operationDetails ?? collect();
-    $attendanceReports = $attendanceReports ?? collect();
-    $comeBackReports = $comeBackReports ?? collect();
-    $absentAnalyses = $absentAnalyses ?? collect();
-    $dailyReport = $dailyReport ?? null;
-@endphp
+        // Set default empty values for all variables
+        $attendanceSummary = $attendanceSummary ?? collect();
+        $otAchievements = $otAchievements ?? collect();
+        $recruitmentSummary = $recruitmentSummary ?? collect();
+        $operationDetails = $operationDetails ?? collect();
+        $attendanceReports = $attendanceReports ?? collect();
+        $comeBackReports = $comeBackReports ?? collect();
+        $absentAnalyses = $absentAnalyses ?? collect();
+        $dailyReport = $dailyReport ?? null;
+    @endphp
     <div class="dashboard">
         <div class="header">
             <h1><i class="fas fa-industry"></i> Factory Operations Dashboard</h1>
@@ -261,14 +278,15 @@
                 {{-- <i class="fas fa-calendar-alt"></i> <span id="currentDate">{{ now()->format('F d, Y') }}</span> --}}
                 <!--date filter form -->
                 <form method="GET" action="{{ route('todayReport') }}" style="display: inline;">
-                    <input type="date" name="date" value="{{ request('date', now()->format('Y-m-d')) }}" required id="currentDate">
+                    <input type="date" name="date" value="{{ request('date', now()->format('Y-m-d')) }}" required
+                        id="currentDate">
                     <button type="submit" class="btn btn-primary">Filter</button>
                 </form>
                 {{-- <span id="currentDate">{{ now()->format('F d, Y') }}</span> --}}
 
             </div>
         </div>
-        
+
         <div class="grid-container">
             <!-- Attendance Summary -->
             <div class="card">
@@ -296,11 +314,11 @@
                     <canvas id="attendanceChart"></canvas>
                 </div>
             </div>
-            
-            <!-- OT Achievements -->
+
+            <!-- Shipments -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">OT Achievements</div>
+                    <div class="card-title">Shipments</div>
                     <div class="card-icon">
                         <i class="fas fa-clock"></i>
                     </div>
@@ -312,11 +330,13 @@
                     </div>
                     <div class="kpi-card">
                         <div class="kpi-label">Above 2H OT</div>
-                        <div class="kpi-value color-warning">{{ $otAchievements->sum('above_two_hours_ot_persons') }}</div>
+                        <div class="kpi-value color-warning">{{ $otAchievements->sum('above_two_hours_ot_persons') }}
+                        </div>
                     </div>
                     <div class="kpi-card">
                         <div class="kpi-label">Achievement</div>
-                        <div class="kpi-value color-success">{{ number_format($otAchievements->avg('achievement'), 1) }}%</div>
+                        <div class="kpi-value color-success">
+                            {{ number_format($otAchievements->avg('achievement'), 1) }}%</div>
                     </div>
                 </div>
                 <div class="progress-container">
@@ -325,11 +345,13 @@
                         <span>{{ number_format($otAchievements->avg('achievement'), 1) }}%</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: {{ $otAchievements->avg('achievement') }}%; background: var(--success);"></div>
+                        <div class="progress-fill"
+                            style="width: {{ $otAchievements->avg('achievement') }}%; background: var(--success);">
+                        </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Recruitment Summary -->
             <div class="card">
                 <div class="card-header">
@@ -345,18 +367,20 @@
                     </div>
                     <div class="kpi-card">
                         <div class="kpi-label">Selected</div>
-                        <div class="kpi-value color-success">{{ $recruitmentSummary->whereNotNull('selected')->count() }}</div>
+                        <div class="kpi-value color-success">
+                            {{ $recruitmentSummary->whereNotNull('selected')->count() }}</div>
                     </div>
                     <div class="kpi-card">
                         <div class="kpi-label">Joined</div>
-                        <div class="kpi-value color-secondary">{{ $recruitmentSummary->whereNotNull('probable_date_of_joining')->count() }}</div>
+                        <div class="kpi-value color-secondary">
+                            {{ $recruitmentSummary->whereNotNull('probable_date_of_joining')->count() }}</div>
                     </div>
                 </div>
                 <div class="chart-container">
                     <canvas id="recruitmentChart"></canvas>
                 </div>
             </div>
-            
+
             <!-- Operation Details -->
             <div class="card">
                 <div class="card-header">
@@ -378,21 +402,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($operationDetails as $operation)
-                            <tr>
-                                <td>{{ $operation->activity }}</td>
-                                <td>{{ $operation->floor_1 }}%</td>
-                                <td>{{ $operation->floor_2 }}%</td>
-                                <td>{{ $operation->floor_3 }}%</td>
-                                <td>{{ $operation->floor_4 }}%</td>
-                                <td class="color-success">{{ $operation->result }}%</td>
-                            </tr>
+                            @foreach ($operationDetails as $operation)
+                                <tr>
+                                    <td>{{ $operation->activity }}</td>
+                                    <td>{{ $operation->floor_1 }}%</td>
+                                    <td>{{ $operation->floor_2 }}%</td>
+                                    <td>{{ $operation->floor_3 }}%</td>
+                                    <td>{{ $operation->floor_4 }}%</td>
+                                    <td class="color-success">{{ $operation->result }}%</td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
-            
+
             <!-- Attendance Details -->
             <div class="card full-width">
                 <div class="card-header">
@@ -423,22 +447,26 @@
                                     <tr>
                                         <td><span class="status-badge badge-late">Late Comers</span></td>
                                         <td>{{ $attendanceReports->where('type', 'late_comer')->count() }}</td>
-                                        <td>{{ $attendanceReports->where('type', 'late_comer')->pluck('floor')->unique()->implode(', ') }}</td>
+                                        <td>{{ $attendanceReports->where('type', 'late_comer')->pluck('floor')->unique()->implode(', ') }}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td><span class="status-badge badge-absent">To Be Absent</span></td>
                                         <td>{{ $attendanceReports->where('type', 'to_be_absent')->count() }}</td>
-                                        <td>{{ $attendanceReports->where('type', 'to_be_absent')->pluck('floor')->unique()->implode(', ') }}</td>
+                                        <td>{{ $attendanceReports->where('type', 'to_be_absent')->pluck('floor')->unique()->implode(', ') }}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td><span class="status-badge badge-leave">On Leave</span></td>
                                         <td>{{ $attendanceReports->where('type', 'on_leave')->count() }}</td>
-                                        <td>{{ $attendanceReports->where('type', 'on_leave')->pluck('floor')->unique()->implode(', ') }}</td>
+                                        <td>{{ $attendanceReports->where('type', 'on_leave')->pluck('floor')->unique()->implode(', ') }}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td><span class="status-badge badge-absent">ML Absence</span></td>
                                         <td>{{ $attendanceReports->where('type', 'ml_absence')->count() }}</td>
-                                        <td>{{ $attendanceReports->where('type', 'ml_absence')->pluck('floor')->unique()->implode(', ') }}</td>
+                                        <td>{{ $attendanceReports->where('type', 'ml_absence')->pluck('floor')->unique()->implode(', ') }}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -446,7 +474,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Employee Details -->
             <div class="card full-width">
                 <div class="card-header">
@@ -469,13 +497,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($comeBackReports as $report)
-                                    <tr>
-                                        <td>{{ $report->employee_id }}</td>
-                                        <td>{{ $report->name }}</td>
-                                        <td>{{ $report->floor }}</td>
-                                        <td>{{ $report->absent_days }}</td>
-                                    </tr>
+                                    @foreach ($comeBackReports as $report)
+                                        <tr>
+                                            <td>{{ $report->employee_id }}</td>
+                                            <td>{{ $report->name }}</td>
+                                            <td>{{ $report->floor }}</td>
+                                            <td>{{ $report->absent_days }}</td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -494,13 +522,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($absentAnalyses as $analysis)
-                                    <tr>
-                                        <td>{{ $analysis->employee_id }}</td>
-                                        <td>{{ $analysis->name }}</td>
-                                        <td>{{ $analysis->last_p_date }}</td>
-                                        <td>{{ $analysis->total_absent_days }}</td>
-                                    </tr>
+                                    @foreach ($absentAnalyses as $analysis)
+                                        <tr>
+                                            <td>{{ $analysis->employee_id }}</td>
+                                            <td>{{ $analysis->name }}</td>
+                                            <td>{{ $analysis->last_p_date }}</td>
+                                            <td>{{ $analysis->total_absent_days }}</td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -508,7 +536,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Daily Reports -->
             <div class="card full-width">
                 <div class="card-header">
@@ -521,12 +549,13 @@
                     <div>
                         <h3 style="margin-bottom: 15px; color: var(--primary);">Shipments</h3>
                         <ul style="list-style-type: none; padding-left: 0;">
-                            @if($dailyReport && $dailyReport->shipments)
-                                @foreach(json_decode($dailyReport->shipments) as $shipment)
-                                <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-                                    <i class="fas fa-shipping-fast color-secondary"></i> 
-                                    <strong>{{ $shipment->order }}</strong> - {{ $shipment->units }} to {{ $shipment->destination }}
-                                </li>
+                            @if ($dailyReport && $dailyReport->shipments)
+                                @foreach (json_decode($dailyReport->shipments) as $shipment)
+                                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
+                                        <i class="fas fa-shipping-fast color-secondary"></i>
+                                        <strong>{{ $shipment->order }}</strong> - {{ $shipment->units }} to
+                                        {{ $shipment->destination }}
+                                    </li>
                                 @endforeach
                             @else
                                 <li style="padding: 8px 0;">No shipments today</li>
@@ -536,15 +565,18 @@
                     <div>
                         <h3 style="margin-bottom: 15px; color: var(--primary);">Remarks</h3>
                         <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                            @if($dailyReport)
-                                @if($dailyReport->improvement_area)
-                                <p><i class="fas fa-exclamation-circle color-warning"></i> <strong>Improvement Area:</strong> {{ $dailyReport->improvement_area }}</p>
+                            @if ($dailyReport)
+                                @if ($dailyReport->improvement_area)
+                                    <p><i class="fas fa-exclamation-circle color-warning"></i> <strong>Improvement
+                                            Area:</strong> {{ $dailyReport->improvement_area }}</p>
                                 @endif
-                                @if($dailyReport->remarkable_incident)
-                                <p><i class="fas fa-star color-success"></i> <strong>Positive Note:</strong> {{ $dailyReport->remarkable_incident }}</p>
+                                @if ($dailyReport->remarkable_incident)
+                                    <p><i class="fas fa-star color-success"></i> <strong>Positive Note:</strong>
+                                        {{ $dailyReport->remarkable_incident }}</p>
                                 @endif
-                                @if($dailyReport->other_information)
-                                <p><i class="fas fa-info-circle color-primary"></i> <strong>Other:</strong> {{ $dailyReport->other_information }}</p>
+                                @if ($dailyReport->other_information)
+                                    <p><i class="fas fa-info-circle color-primary"></i> <strong>Other:</strong>
+                                        {{ $dailyReport->other_information }}</p>
                                 @endif
                             @else
                                 <p>No remarks available</p>
@@ -554,21 +586,22 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="footer">
-            <p>Generated on <span id="currentDateTime">{{ now()->format('F d, Y H:i') }}</span> | Factory Operations Dashboard v1.0</p>
+            <p>Generated on <span id="currentDateTime">{{ now()->format('F d, Y H:i') }}</span> | Factory Operations
+                Dashboard v1.0</p>
         </div>
     </div>
 
     <script>
         // Set current date and time
         const now = new Date();
-        document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
+        document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
         });
-        
+
         document.getElementById('currentDateTime').textContent = now.toLocaleString('en-US', {
             year: 'numeric',
             month: 'long',
@@ -576,7 +609,7 @@
             hour: '2-digit',
             minute: '2-digit'
         });
-        
+
         // Initialize charts
         document.addEventListener('DOMContentLoaded', function() {
             // Attendance Chart
@@ -585,8 +618,7 @@
                 type: 'bar',
                 data: {
                     labels: ['Floor 1', 'Floor 2', 'Floor 3', 'Floor 4'],
-                    datasets: [
-                        {
+                    datasets: [{
                             label: 'Present',
                             data: [
                                 {{ $attendanceSummary->where('floor', 'F1')->first()->present ?? 0 }},
@@ -632,7 +664,7 @@
                     }
                 }
             });
-            
+
             // Recruitment Chart
             const recruitmentCtx = document.getElementById('recruitmentChart').getContext('2d');
             new Chart(recruitmentCtx, {
@@ -664,37 +696,37 @@
                     }
                 }
             });
-            
+
             // Attendance Analysis Chart
             const analysisCtx = document.getElementById('attendanceAnalysisChart').getContext('2d');
             new Chart(analysisCtx, {
                 type: 'radar',
                 data: {
-                    labels: ['Punctuality', 'Absenteeism', 'Leave Balance', 'OT Compliance', 'Shift Coverage'],
-                    datasets: [
-                        {
+                    labels: ['Punctuality', 'Absenteeism', 'Leave Balance', 'OT Compliance',
+                        'Shift Coverage'
+                    ],
+                    datasets: [{
                             label: 'Current Month',
                             data: [
                                 @php
-                        // Safe calculation function
-                        function calculatePercentage($numerator, $denominator) {
-                            return $denominator != 0 
-                                ? ($numerator / $denominator) * 100
-                                : 0;
-                        }
-                        
-                        $onrollAvg = $attendanceSummary->avg('onroll') ?? 1;
-                        $presentAvg = $attendanceSummary->avg('present') ?? 0;
-                        $absentAvg = $attendanceSummary->avg('absent') ?? 0;
-                        $leaveAvg = $attendanceSummary->avg('leave') ?? 0;
-                        $otAchievementAvg = $otAchievements->avg('achievement') ?? 0;
-                    @endphp
-                    
-                    {{ calculatePercentage($presentAvg, $onrollAvg) }},
-                    {{ calculatePercentage($absentAvg, $onrollAvg) }},
-                    {{ calculatePercentage($leaveAvg, $onrollAvg) }},
-                    {{ $otAchievementAvg }},
-                    85 // Placeholder value
+                                    // Safe calculation function
+                                    function calculatePercentage($numerator, $denominator)
+                                    {
+                                        return $denominator != 0 ? ($numerator / $denominator) * 100 : 0;
+                                    }
+
+                                    $onrollAvg = $attendanceSummary->avg('onroll') ?? 1;
+                                    $presentAvg = $attendanceSummary->avg('present') ?? 0;
+                                    $absentAvg = $attendanceSummary->avg('absent') ?? 0;
+                                    $leaveAvg = $attendanceSummary->avg('leave') ?? 0;
+                                    $otAchievementAvg = $otAchievements->avg('achievement') ?? 0;
+                                @endphp
+
+                                {{ calculatePercentage($presentAvg, $onrollAvg) }},
+                                {{ calculatePercentage($absentAvg, $onrollAvg) }},
+                                {{ calculatePercentage($leaveAvg, $onrollAvg) }},
+                                {{ $otAchievementAvg }},
+                                85 // Placeholder value
                             ],
                             fill: true,
                             backgroundColor: 'rgba(52, 152, 219, 0.2)',
@@ -730,4 +762,5 @@
         });
     </script>
 </body>
+
 </html>

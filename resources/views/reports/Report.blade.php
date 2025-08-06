@@ -793,7 +793,7 @@
                 </div>
             </div>
 
-            <!-- OT Achievements Section -->
+            <!-- Shipments Section -->
             <div class="section">
                 <div class="section-header">
                     <i class="fas fa-clock"></i>
@@ -1113,7 +1113,7 @@
                 @endforeach
                 worksheet.addRow([]); // Empty row
 
-                // 7. OT Achievements
+                // 7. Shipments
                 worksheet.addRow(['9. Details of O.T Achievement']);
                 worksheet.addRow(['Floor', '2 Hours OT Persons', 'Above 2 Hours OT Persons', 'Achievement',
                     'Remarks'

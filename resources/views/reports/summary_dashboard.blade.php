@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -348,49 +349,49 @@
             gap: 20px;
             margin-bottom: 30px;
         }
-        
+
         .kpi-card {
             background: white;
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
             border-left: 4px solid var(--primary);
         }
-        
+
         .kpi-card.danger {
             border-left-color: var(--danger);
         }
-        
+
         .kpi-card.warning {
             border-left-color: var(--warning);
         }
-        
+
         .kpi-card.success {
             border-left-color: var(--success);
         }
-        
+
         .kpi-title {
             font-size: 16px;
             color: var(--gray);
             margin-bottom: 10px;
         }
-        
+
         .kpi-value {
             font-size: 28px;
             font-weight: 700;
             color: var(--dark);
         }
-        
+
         .kpi-subtext {
             font-size: 14px;
             color: var(--gray);
             margin-top: 5px;
         }
-        
+
         .summary-section {
             margin-bottom: 30px;
         }
-        
+
         .section-title {
             font-size: 18px;
             font-weight: 600;
@@ -401,6 +402,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="dashboard">
         <div class="header">
@@ -408,7 +410,8 @@
                 <i class="fas fa-industry"></i>
                 <div>
                     <div class="company-name">Tosrifa Industries Ltd.</div>
-                    <div class="report-title">Summary Dashboard - {{ \Carbon\Carbon::parse($reportDate)->format('d/m/Y') }}</div>
+                    <div class="report-title">Summary Dashboard -
+                        {{ \Carbon\Carbon::parse($reportDate)->format('d/m/Y') }}</div>
                 </div>
             </div>
             <div class="controls">
@@ -424,32 +427,32 @@
             </div>
         </div>
         @php
-        $totalOnroll = $attendanceSummary->sum('onroll');
-        $totalPresent = $attendanceSummary->sum('present');
-        $totalAbsent = $attendanceSummary->sum('absent');
-        $totalLeave = $attendanceSummary->sum('leave');
-    @endphp
+            $totalOnroll = $attendanceSummary->sum('onroll');
+            $totalPresent = $attendanceSummary->sum('present');
+            $totalAbsent = $attendanceSummary->sum('absent');
+            $totalLeave = $attendanceSummary->sum('leave');
+        @endphp
         <div class="content">
             <div class="kpi-container">
                 <div class="kpi-card">
                     <div class="kpi-title">Total Employees</div>
                     <div class="kpi-value">{{ $attendanceSummary->sum('onroll') }}</div>
                 </div>
-                
+
                 <div class="kpi-card success">
                     <div class="kpi-title">Present Today</div>
                     <div class="kpi-value">{{ $totalPresent }}</div>
                     <div class="kpi-subtext">
-                        {{ $totalOnroll > 0 ? number_format(($totalPresent/$totalOnroll)*100, 1) : 0 }}% attendance
+                        {{ $totalOnroll > 0 ? number_format(($totalPresent / $totalOnroll) * 100, 1) : 0 }}% attendance
                     </div>
                 </div>
-                
+
                 <div class="kpi-card danger">
                     <div class="kpi-title">Absent Today</div>
                     <div class="kpi-value">{{ $attendanceSummary->sum('absent') }}</div>
                     <div class="kpi-subtext">{{ $comeBackReports->count() }} returned from absence</div>
                 </div>
-                
+
                 <div class="kpi-card warning">
                     <div class="kpi-title">On Leave</div>
                     <div class="kpi-value">{{ $attendanceSummary->sum('leave') }}</div>
@@ -466,7 +469,7 @@
                         <div class="kpi-value">{{ $absentAnalyses->where('total_absent_days', '>', 3)->count() }}</div>
                         <div class="kpi-subtext">>3 days absent</div>
                     </div>
-                    
+
                     <div class="kpi-card warning">
                         <div class="kpi-title">Most Absent Floor</div>
                         <div class="kpi-value">
@@ -477,7 +480,7 @@
                         </div>
                         <div class="kpi-subtext">{{ $floorAbsence->absent ?? 0 }} absences</div>
                     </div>
-                    
+
                     <div class="kpi-card">
                         <div class="kpi-title">New Recruits Today</div>
                         <div class="kpi-value">
@@ -496,29 +499,29 @@
                         $efficiency = $operationDetails->where('activity', 'Efficiency')->first();
                         $production = $operationDetails->where('activity', 'Production')->first();
                     @endphp
-                    
+
                     <div class="kpi-card">
                         <div class="kpi-title">Overall Efficiency</div>
                         <div class="kpi-value">
-                            @if($efficiency)
-                                {{ number_format($efficiency->result/1000, 1) }}%
+                            @if ($efficiency)
+                                {{ number_format($efficiency->result / 1000, 1) }}%
                             @else
                                 N/A
                             @endif
                         </div>
                     </div>
-                    
+
                     <div class="kpi-card">
                         <div class="kpi-title">Total Production</div>
                         <div class="kpi-value">
-                            @if($production)
+                            @if ($production)
                                 {{ number_format($production->result) }}
                             @else
                                 N/A
                             @endif
                         </div>
                     </div>
-                    
+
                     <div class="kpi-card">
                         <div class="kpi-title">Overtime Achievement</div>
                         <div class="kpi-value">
@@ -533,39 +536,41 @@
                     <i class="fas fa-file-alt"></i> Daily Highlights
                 </div>
                 <div class="kpi-card">
-                    @if($dailyReport)
+                    @if ($dailyReport)
                         <div class="kpi-title">Key Incidents & Remarks</div>
                         <div style="margin-top: 15px;">
-                            @if($dailyReport->shipments)
-                                <p><i class="fas fa-exclamation-circle color-warning"></i> 
-                                    <table class="table table-sm">
-                                        <thead>
+                            @if ($dailyReport->shipments)
+                                <p><i class="fas fa-exclamation-circle color-warning"></i>
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Export Qty</th>
+                                            <th>Export Value ($)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($dailyReport->shipments as $shipment)
                                             <tr>
-                                                <th>Date</th>
-                                                <th>Export Qty</th>
-                                                <th>Export Value ($)</th>
+                                                <td>{{ $shipment['date'] }}</td>
+                                                <td>{{ $shipment['export_qty'] }} pcs</td>
+                                                <td>${{ number_format($shipment['export_value'], 2) }}</td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($dailyReport->shipments as $shipment)
-                                                <tr>
-                                                    <td>{{ $shipment['date'] }}</td>
-                                                    <td>{{ $shipment['export_qty'] }} pcs</td>
-                                                    <td>${{ number_format($shipment['export_value'], 2) }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                              
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
                                 </p>
                             @endif
-                            @if($dailyReport->remarkable_incident)
-                                <p><i class="fas fa-star color-success"></i> 
-                                    <strong>Positive Note:</strong> {{ $dailyReport->remarkable_incident }}</p>
+                            @if ($dailyReport->remarkable_incident)
+                                <p><i class="fas fa-star color-success"></i>
+                                    <strong>Positive Note:</strong> {{ $dailyReport->remarkable_incident }}
+                                </p>
                             @endif
-                            @if($dailyReport->other_information)
-                                <p><i class="fas fa-info-circle color-primary"></i> 
-                                    <strong>Other:</strong> {{ $dailyReport->other_information }}</p>
+                            @if ($dailyReport->other_information)
+                                <p><i class="fas fa-info-circle color-primary"></i>
+                                    <strong>Other:</strong> {{ $dailyReport->other_information }}
+                                </p>
                             @endif
                         </div>
                     @else
@@ -575,19 +580,19 @@
             </div>
         </div>
     </div>
-    
+
     <script>
         // JavaScript for summary dashboard
         document.getElementById('downloadBtn').addEventListener('click', function() {
             // Simplified Excel export for summary data
             const workbook = new ExcelJS.Workbook();
             const worksheet = workbook.addWorksheet('Summary Report');
-            
+
             // Add summary data
             worksheet.addRow(['Tosrifa Industries - Summary Report', '', '', '']);
             worksheet.addRow(['Date', '{{ $reportDate }}', '', '']);
             worksheet.addRow([]);
-            
+
             // Attendance summary
             worksheet.addRow(['Attendance Summary']);
             worksheet.addRow(['Total Employees', '{{ $attendanceSummary->sum('onroll') }}']);
@@ -595,18 +600,18 @@
             worksheet.addRow(['Absent', '{{ $attendanceSummary->sum('absent') }}']);
             worksheet.addRow(['On Leave', '{{ $attendanceSummary->sum('leave') }}']);
             worksheet.addRow([]);
-            
+
             // Operational summary
             worksheet.addRow(['Operational Summary']);
-            @if($efficiency)
+            @if ($efficiency)
                 worksheet.addRow(['Efficiency', '{{ number_format($efficiency->result * 100, 1) }}%']);
             @endif
-            @if($production)
+            @if ($production)
                 worksheet.addRow(['Production', '{{ number_format($production->result) }}']);
             @endif
-            worksheet.addRow(['OT Achievement', '{{ number_format($otAchievements->sum('achievement'), 1) }}%']);
+            worksheet.addRow(['Shipment', '{{ number_format($otAchievements->sum('achievement'), 1) }}%']);
             worksheet.addRow([]);
-            
+
             // Generate file
             workbook.xlsx.writeBuffer().then(buffer => {
                 const blob = new Blob([buffer], {
@@ -617,4 +622,5 @@
         });
     </script>
 </body>
+
 </html>

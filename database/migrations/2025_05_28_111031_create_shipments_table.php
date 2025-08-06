@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOtAchievementsTable extends Migration
+class CreateShipmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,15 @@ class CreateOtAchievementsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ot_achievements', function (Blueprint $table) {
+        Schema::create('shipments', function (Blueprint $table) {
             $table->id();
-            $table->string('floor')->nullable()->index();
-            $table->integer('two_hours_ot_persons')->nullable()->index();
-            $table->integer('above_two_hours_ot_persons');
-            $table->decimal('achievement', 12, 2)->nullable()->index();
+            $table->date(   'shipment_date')->nullable()->index();
+            $table->integer('export_qty')->nullable()->index();
+            $table->decimal('export_value', 15, 2)->nullable()->index();
             $table->text('remarks')->nullable();
             $table->date('report_date')->nullable()->index();
             $table->timestamps();
 
-            $table->index(['floor', 'report_date']);
         });
     }
 
@@ -34,6 +32,6 @@ class CreateOtAchievementsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ot_achievements');
+        Schema::dropIfExists('shipments');
     }
 }

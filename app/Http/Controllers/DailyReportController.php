@@ -34,11 +34,6 @@ class DailyReportController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'report_date' => 'required|date|unique:daily_reports',
-            'shipment_date.*' => 'required|date',
-            'export_qty.*' => 'required|integer',
-            'export_value.*' => 'required|numeric',
-            'dhu_floor.*' => 'required|string',
-            'dhu_percentage.*' => 'required|numeric',
             'remarkable_incident' => 'nullable|string',
             'improvement_area' => 'nullable|string',
             'other_information' => 'nullable|string'
@@ -50,27 +45,8 @@ class DailyReportController extends Controller
                 ->withInput();
         }
 
-        $shipments = [];
-        foreach ($request->shipment_date as $key => $date) {
-            $shipments[] = [
-                'date' => $date,
-                'export_qty' => $request->export_qty[$key],
-                'export_value' => $request->export_value[$key]
-            ];
-        }
-
-        $dhuReports = [];
-        foreach ($request->dhu_floor as $key => $floor) {
-            $dhuReports[] = [
-                'floor' => $floor,
-                'dhu_percentage' => $request->dhu_percentage[$key]
-            ];
-        }
-
         DailyReport::create([
             'report_date' => $request->report_date,
-            'shipments' => $shipments,
-            'dhu_reports' => $dhuReports,
             'remarkable_incident' => $request->remarkable_incident,
             'improvement_area' => $request->improvement_area,
             'other_information' => $request->other_information
@@ -89,11 +65,6 @@ class DailyReportController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'report_date' => 'required|date|unique:daily_reports,report_date,' . $report->id,
-            'shipment_date.*' => 'required|date',
-            'export_qty.*' => 'required|integer',
-            'export_value.*' => 'required|numeric',
-            'dhu_floor.*' => 'required|string',
-            'dhu_percentage.*' => 'required|numeric',
             'remarkable_incident' => 'nullable|string',
             'improvement_area' => 'nullable|string',
             'other_information' => 'nullable|string'
@@ -105,27 +76,8 @@ class DailyReportController extends Controller
                 ->withInput();
         }
 
-        $shipments = [];
-        foreach ($request->shipment_date as $key => $date) {
-            $shipments[] = [
-                'date' => $date,
-                'export_qty' => $request->export_qty[$key],
-                'export_value' => $request->export_value[$key]
-            ];
-        }
-
-        $dhuReports = [];
-        foreach ($request->dhu_floor as $key => $floor) {
-            $dhuReports[] = [
-                'floor' => $floor,
-                'dhu_percentage' => $request->dhu_percentage[$key]
-            ];
-        }
-
         $report->update([
             'report_date' => $request->report_date,
-            'shipments' => $shipments,
-            'dhu_reports' => $dhuReports,
             'remarkable_incident' => $request->remarkable_incident,
             'improvement_area' => $request->improvement_area,
             'other_information' => $request->other_information

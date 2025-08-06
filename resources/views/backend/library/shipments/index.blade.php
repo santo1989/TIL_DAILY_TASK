@@ -1,13 +1,13 @@
 <x-backend.layouts.master>
     <x-slot name="pageTitle">
-        OT Achievements
+        Shipments
     </x-slot>
 
     <x-backend.layouts.elements.errors />
     <div class="container">
         <div class="row mb-4">
             <div class="col-md-12 text-center">
-                <h2> OT Achievements</h2>
+                <h2> Shipments</h2>
             </div>
         </div>
 
@@ -22,39 +22,31 @@
                         <a href="{{ route('home') }}" class="btn btn-secondary btn-sm">
                             <i class="fas fa-arrow-left"></i> Back
                         </a>
-                        <a href="" class="btn btn-primary btn-sm">
+                        <a href="{{ route('shipments.create') }}" class="btn btn-primary btn-sm">
                             <i class="fas fa-plus"></i> Add Data
                         </a>
                         <form method="GET" class="d-flex flex-nowrap gap-2">
-                            <input type="date" name="report_date" class="form-control form-control-sm" 
+                            <input type="date" name="report_date" class="form-control form-control-sm"
                                 value="{{ request('report_date') }}" style="width: 150px;">
-                            <select name="floor" class="form-control form-control-sm" style="width: 120px;">
-                                <option value="">All Floors</option>
-                                @foreach (['1st Floor', '2nd Floor', '3rd Floor', '4th Floor', '5th Floor'] as $floor)
-                                    <option value="{{ $floor }}" {{ request('floor') == $floor ? 'selected' : '' }}>
-                                        {{ $floor }}
-                                    </option>
-                                @endforeach
-                            </select>
                             <button class="btn btn-primary btn-sm">
                                 <i class="fas fa-filter"></i> Filter
                             </button>
                         </form>
                     </div>
-            
+
                     <!-- Right Group -->
                     <div class="d-flex align-items-center gap-2">
                         <!--reset filter button-->
-                        <a href="{{ route('ot-achievements.index') }}" class="btn btn-secondary btn-sm">
+                        <a href="{{ route('shipments.index') }}" class="btn btn-secondary btn-sm">
                             <i class="fas fa-sync"></i> Reset Filter
                         </a>
                         <!-- Download and Upload buttons -->
-                        <a href="{{ route('ot-achievements.download.template') }}" class="btn btn-success btn-sm">
+                        {{-- <a href="{{ route('shipments.download.template') }}" class="btn btn-success btn-sm">
                             <i class="fas fa-download"></i> Template
                         </a>
                         <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#uploadModal">
                             <i class="fas fa-upload"></i> Upload
-                        </button>
+                        </button> --}}
                     </div>
                 </div>
             </div>
@@ -72,37 +64,35 @@
 
 
             <div class="table-responsive">
-                <table class="table table-bordered">
+                <table class="table table-sm">
                     <thead>
                         <tr>
-                            <th>SL</th>
                             <th>Report Date</th>
-                            <th>Floor</th>
-                            <th>2H OT Persons</th>
-                            <th>Above 2H OT Persons</th>
-                            <th>Achievement</th>
+                            <th>Date</th>
+                            <th>Export Qty</th>
+                            <th>Export Value ($)</th>
                             <th>Remarks</th>
-                            
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($achievements as $record)
+                        @foreach ($shipments as $shipment)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $record->report_date->format('Y-m-d') }}</td>
-                                <td>{{ $record->floor }}</td>
-                                <td>{{ $record->two_hours_ot_persons }}</td>
-                                <td>{{ $record->above_two_hours_ot_persons }}</td>
-                                <td>{{ number_format($record->achievement, 2) }}</td>
-                                <td>{{ $record->remarks }}</td>
-                                
+                                <td>{{ Carbon\Carbon::parse($shipment->report_date)->format('Y-m-d') }}</td>
+                                <td>{{ Carbon\Carbon::parse($shipment->shipment_date)->format('Y-m-d') }}</td>
+                                <td>{{ $shipment->export_qty }} pcs</td>
+                                <td>${{ number_format($shipment->export_value, 2) }}</td>
+                                <td>{{ $shipment->remarks }}</td>
                                 <td>
-                                    <a href="{{ route('ot-achievements.edit', $record) }}"
-                                        class="btn btn-sm btn-warning">Edit</a>
-                                    <form action="{{ route('ot-achievements.destroy', $record) }}" method="POST">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    <a href="{{ route('shipments.edit', $shipment->id) }}" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <form action="{{ route('shipments.destroy', $shipment->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this shipment?');">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -110,19 +100,19 @@
                     </tbody>
                 </table>
             </div>
-            {{ $achievements->links() }}
+            {{ $shipments->links() }}
         </div>
     </div>
 
     <!-- Upload Modal -->
-    <div class="modal fade" id="uploadModal" tabindex="-1">
+    {{-- <div class="modal fade" id="uploadModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Upload OT Achievements</h5>
+                    <h5 class="modal-title">Upload Shipments</h5>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('ot-achievements.upload') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('shipments.upload') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label>Excel File</label>
@@ -138,5 +128,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </x-backend.layouts.master>

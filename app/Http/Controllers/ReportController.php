@@ -9,7 +9,7 @@ use App\Models\ComeBackReport;
 use App\Models\DailyReport;
 use App\Models\OperationDetail;
 use App\Models\OperatorAbsentAnalysis;
-use App\Models\OtAchievement;
+use App\Models\Shipment;
 use App\Models\RecruitmentSummary;
 
 class ReportController extends Controller
@@ -32,7 +32,7 @@ class ReportController extends Controller
             'attendanceReports' => AttendanceReport::where('report_date', $today)->get(),
             'recruitmentSummary' => RecruitmentSummary::whereDate('interview_date', $today)->get(),
             'operationDetails' => OperationDetail::where('report_date', $today)->get(),
-            'otAchievements' => OtAchievement::where('report_date', $today)->get(),
+            'otAchievements' => Shipment::where('report_date', $today)->get(),
             'dailyReport' => DailyReport::where('report_date', $today)->first(),
             'reportDate' => $today
         ]);
@@ -55,7 +55,7 @@ class ReportController extends Controller
             'attendanceReports' => AttendanceReport::where('report_date', $today)->get(),
             'recruitmentSummary' => RecruitmentSummary::whereDate('interview_date', $today)->get(),
             'operationDetails' => OperationDetail::where('report_date', $today)->get(),
-            'otAchievements' => OtAchievement::where('report_date', $today)->get(),
+            'otAchievements' => Shipment::where('report_date', $today)->get(),
             'dailyReport' => DailyReport::where('report_date', $today)->first(),
             'reportDate' => $today
         ]);
@@ -78,7 +78,7 @@ class ReportController extends Controller
             'attendanceReports' => AttendanceReport::where('report_date', $today)->get(),
             'recruitmentSummary' => RecruitmentSummary::whereDate('interview_date', $today)->get(),
             'operationDetails' => OperationDetail::where('report_date', $today)->get(),
-            'otAchievements' => OtAchievement::where('report_date', $today)->get(),
+            'otAchievements' => Shipment::where('report_date', $today)->get(),
             'dailyReport' => DailyReport::where('report_date', $today)->first(),
             'reportDate' => $today
         ]);
@@ -95,7 +95,7 @@ class ReportController extends Controller
             'attendanceReports' => AttendanceReport::where('report_date', $reportDate)->get(),
             'recruitmentSummary' => RecruitmentSummary::whereDate('interview_date', $reportDate)->get(),
             'operationDetails' => OperationDetail::where('report_date', $reportDate)->get(),
-            'otAchievements' => OtAchievement::where('report_date', $reportDate)->get(),
+            'otAchievements' => Shipment::where('report_date', $reportDate)->get(),
             'dailyReport' => DailyReport::where('report_date', $reportDate)->first(),
             'reportDate' => $reportDate
         ]);
@@ -111,7 +111,7 @@ class ReportController extends Controller
             'absentAnalyses' => OperatorAbsentAnalysis::where('report_date', $reportDate)->get(),
             'recruitmentSummary' => RecruitmentSummary::whereDate('interview_date', $reportDate)->get(),
             'operationDetails' => OperationDetail::where('report_date', $reportDate)->get(),
-            'otAchievements' => OtAchievement::where('report_date', $reportDate)->get(),
+            'otAchievements' => Shipment::where('report_date', $reportDate)->get(),
             'dailyReport' => DailyReport::where('report_date', $reportDate)->first(),
             'reportDate' => $reportDate
         ]);
@@ -127,7 +127,7 @@ class ReportController extends Controller
             'absentAnalyses' => OperatorAbsentAnalysis::where('report_date', $reportDate)->get(),
             'recruitmentSummary' => RecruitmentSummary::whereDate('interview_date', $reportDate)->get(),
             'operationDetails' => OperationDetail::where('report_date', $reportDate)->get(),
-            'otAchievements' => OtAchievement::where('report_date', $reportDate)->get(),
+            'otAchievements' => Shipment::where('report_date', $reportDate)->get(),
             'dailyReport' => DailyReport::where('report_date', $reportDate)->first(),
             'reportDate' => $reportDate
         ]);

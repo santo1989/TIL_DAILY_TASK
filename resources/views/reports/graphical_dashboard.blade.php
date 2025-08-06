@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tosrifa Industries - Graphical Dashboard</title>
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
@@ -349,7 +350,7 @@
             gap: 25px;
             margin: 30px 0;
         }
-        
+
         .chart-container {
             background: white;
             border: 1px solid var(--border);
@@ -357,39 +358,40 @@
             padding: 20px;
             height: 400px;
         }
-        
+
         .chart-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
         }
-        
+
         .chart-title {
             font-weight: 600;
             color: var(--primary);
             font-size: 16px;
         }
-        
+
         .mini-chart {
             height: 100px;
             margin-top: 15px;
         }
-        
+
         .chart-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
-        
+
         .metric-card {
             background: white;
             border-radius: 8px;
             padding: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
     </style>
 </head>
+
 <body>
     <div class="dashboard">
         <div class="header">
@@ -397,7 +399,8 @@
                 <i class="fas fa-industry"></i>
                 <div>
                     <div class="company-name">Tosrifa Industries Ltd.</div>
-                    <div class="report-title">Graphical Dashboard - {{ \Carbon\Carbon::parse($reportDate)->format('d/m/Y') }}</div>
+                    <div class="report-title">Graphical Dashboard -
+                        {{ \Carbon\Carbon::parse($reportDate)->format('d/m/Y') }}</div>
                 </div>
             </div>
             <div class="controls">
@@ -422,7 +425,7 @@
                     </div>
                     <canvas id="attendanceChart"></canvas>
                 </div>
-                
+
                 <!-- Efficiency by Floor -->
                 <div class="chart-container">
                     <div class="chart-header">
@@ -430,14 +433,14 @@
                     </div>
                     <canvas id="efficiencyChart"></canvas>
                 </div>
-                
+
                 <!-- Absenteeism Analysis -->
                 <div class="chart-container">
                     <div class="chart-header">
                         <div class="chart-title">Absenteeism Analysis</div>
                     </div>
                     <canvas id="absenteeismChart"></canvas>
-                    
+
                     <div class="chart-row">
                         <div class="metric-card">
                             <div>Long-term Absences</div>
@@ -455,15 +458,15 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- OT Achievement -->
+
+                <!-- Shipment -->
                 <div class="chart-container">
                     <div class="chart-header">
                         <div class="chart-title">Overtime Achievement</div>
                     </div>
                     <canvas id="otChart"></canvas>
                 </div>
-                
+
                 <!-- Recruitment Pipeline -->
                 <div class="chart-container">
                     <div class="chart-header">
@@ -471,7 +474,7 @@
                     </div>
                     <canvas id="recruitmentChart"></canvas>
                 </div>
-                
+
                 <!-- Production Metrics -->
                 <div class="chart-container">
                     <div class="chart-header">
@@ -482,11 +485,11 @@
             </div>
         </div>
     </div>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize all charts
-            
+
             // Attendance Distribution Chart
             new Chart(document.getElementById('attendanceChart'), {
                 type: 'pie',
@@ -512,7 +515,7 @@
                     maintainAspectRatio: false
                 }
             });
-            
+
             // Efficiency by Floor Chart
             const efficiencyData = {!! json_encode($operationDetails->where('activity', 'Efficiency')->first()) !!};
             new Chart(document.getElementById('efficiencyChart'), {
@@ -542,7 +545,7 @@
                     }
                 }
             });
-            
+
             // Absenteeism Analysis Chart
             const absentDaysData = @json($absentAnalyses->groupBy('total_absent_days')->map->count());
             new Chart(document.getElementById('absenteeismChart'), {
@@ -561,12 +564,14 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        y: { beginAtZero: true }
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
             });
-            
-            // OT Achievement Chart
+
+            // Shipment Chart
             new Chart(document.getElementById('otChart'), {
                 type: 'doughnut',
                 data: {
@@ -584,14 +589,14 @@
                     maintainAspectRatio: false
                 }
             });
-            
+
             // Recruitment Pipeline Chart
             const recruitmentData = {
                 interviewed: {{ $recruitmentSummary->count() }},
                 selected: {{ $recruitmentSummary->where('selected', 'Yes')->count() }},
                 joined: {{ $recruitmentSummary->where('probable_date_of_joining', \Carbon\Carbon::parse($reportDate)->format('Y-m-d'))->count() }}
             };
-            
+
             new Chart(document.getElementById('recruitmentChart'), {
                 type: 'bar',
                 data: {
@@ -611,7 +616,7 @@
                     maintainAspectRatio: false
                 }
             });
-            
+
             // Production Metrics Chart
             const productionData = {!! json_encode($operationDetails->where('activity', 'Production')->first()) !!};
             new Chart(document.getElementById('productionChart'), {
@@ -646,7 +651,7 @@
                     const imgProps = pdf.getImageProperties(imgData);
                     const pdfWidth = pdf.internal.pageSize.getWidth();
                     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-                    
+
                     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
                     pdf.save(`Tosrifa_Graphical_Report_{{ $reportDate }}.pdf`);
                 });
@@ -656,4 +661,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
+
 </html>

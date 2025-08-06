@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Same head content as original report -->
     <meta charset="UTF-8">
@@ -341,6 +342,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="dashboard">
         <div class="header">
@@ -348,7 +350,8 @@
                 <i class="fas fa-industry"></i>
                 <div>
                     <div class="company-name">Tosrifa Industries Ltd.</div>
-                    <div class="report-title">Comprehensive Daily Report - {{ \Carbon\Carbon::parse($reportDate)->format('d/m/Y') }}</div>
+                    <div class="report-title">Comprehensive Daily Report -
+                        {{ \Carbon\Carbon::parse($reportDate)->format('d/m/Y') }}</div>
                 </div>
             </div>
             <div class="controls">
@@ -388,7 +391,7 @@
             </div>
 
             <!-- Include all other sections with full tables -->
-            
+
             <!-- Daily Report Section -->
             @if ($dailyReport)
                 <div class="section">
@@ -397,7 +400,7 @@
             @endif
         </div>
     </div>
-    
+
     <!-- Same JavaScript as original report -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -605,7 +608,7 @@
                 @endforeach
                 worksheet.addRow([]); // Empty row
 
-                // 7. OT Achievements
+                // 7. Shipments
                 worksheet.addRow(['9. Details of O.T Achievement']);
                 worksheet.addRow(['Floor', '2 Hours OT Persons', 'Above 2 Hours OT Persons', 'Achievement',
                     'Remarks'
@@ -782,4 +785,5 @@
         });
     </script>
 </body>
+
 </html>

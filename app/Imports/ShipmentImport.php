@@ -2,13 +2,13 @@
 
 namespace App\Imports;
 
-use App\Models\OtAchievement;
+use App\Models\Shipment;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class OtAchievementImport implements ToCollection, WithHeadingRow
+class ShipmentImport implements ToCollection, WithHeadingRow
 {
     protected $reportDate;
 
@@ -20,7 +20,7 @@ class OtAchievementImport implements ToCollection, WithHeadingRow
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) {
-            OtAchievement::updateOrCreate(
+            Shipment::updateOrCreate(
                 [
                     'floor' => $row['floor'],
                     'report_date' => $this->reportDate

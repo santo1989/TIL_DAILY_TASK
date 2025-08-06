@@ -90,7 +90,7 @@
                                         Buyer Management
                                     </a>
                                 </div>
-                              
+
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                         href="{{ route('roles.index') }}">
@@ -113,16 +113,6 @@
                                     </a>
 
                                 </div>
-                                {{-- <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                        href="{{ route('planning_data.index') }}">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                        Plan Entry
-                                    </a>
-
-                                </div> --}}
-
-                                
 
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
@@ -141,47 +131,54 @@
 
                                 </div>
                                 <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;" href="{{ route('operator-absent-analysis.index') }}">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                        href="{{ route('operator-absent-analysis.index') }}">
                                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                         Operator Absent Analysis
                                     </a>
                                 </div>
                                 <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;" href="{{ route('attendance-reports.index') }}">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                        href="{{ route('attendance-reports.index') }}">
                                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                         Attendance Reports
                                     </a>
                                 </div>
 
                                 <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;" href="{{ route('recruitment-summaries.index') }}">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                        href="{{ route('recruitment-summaries.index') }}">
                                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                         Recruitment Summary
                                     </a>
                                 </div>
                                 <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;" href="{{ route('operation-details.index') }}">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                        href="{{ route('operation-details.index') }}">
                                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                        Operation Details
+                                        Operation Details, DHU Report
                                     </a>
                                 </div>
 
                                 <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;" href="{{ route('ot-achievements.index') }}">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                        OT Achievements
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                        href="{{ route('shipments.index') }}">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i>Shipments</div>
+
                                     </a>
                                 </div>
                                 <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;" href="{{ route('floor-timings.index') }}">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                        href="{{ route('floor-timings.index') }}">
                                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                         Floor Timings
                                     </a>
                                 </div>
                                 <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;" href="{{ route('daily-reports.index') }}">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                        href="{{ route('daily-reports.index') }}">
                                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                        Shipment Status, DHU Report, Others
+                                        Incident, Improvement Area, Other Information
                                     </a>
                                 </div>
 
@@ -190,44 +187,95 @@
                         @endcan
 
 
+                        <!-- HR Links -->
+                        @can('HR')
+                            <div class="col-3 pt-1 pb-1">
+                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                    href="{{ route('attendance.summary') }}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>Attendance Summary
+                                </a>
+                            </div>
+                            <div class="col-3 pt-1 pb-1">
+                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                    href="{{ route('attendance-reports.index') }}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Attendance
+                                    Reports
+                                </a>
+                            </div>
+                            <div class="col-3 pt-1 pb-1">
+                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                    href="{{ route('recruitment-summaries.index') }}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Recruitment
+                                    Summary
+                                </a>
+                            </div>
+                            <div class="col-3 pt-1 pb-1">
+                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                    href="{{ route('floor-timings.index') }}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Floor Timings
+                                </a>
+                            </div>
+                        @endcan
+
+                        <!-- Welfare Links -->
+                        @can('Welfare')
+                            <div class="col-3 pt-1 pb-1">
+                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                    href="{{ route('comeback.reports') }}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>Come Back Reports
+                                </a>
+                            </div>
+                            <div class="col-3 pt-1 pb-1">
+                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                    href="{{ route('operator-absent-analysis.index') }}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Operator
+                                    Absent Analysis
+                                </a>
+                            </div>
+                        @endcan
+
+                        <!-- IE Links -->
+                        @can('IE')
+                            <div class="col-3 pt-1 pb-1">
+                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                    href="{{ route('operation-details.index') }}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Operation
+                                    Details
+                                </a>
+                            </div>
+                        @endcan
+
+                        <!-- TIL_Administrator Links -->
+                        @can('TIL_Administrator')
+                            <div class="col-3 pt-1 pb-1">
+                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                    href="{{ route('daily-reports.index') }}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Incident
+                                    Reports
+                                </a>
+                            </div>
+                        @endcan
+
+                        <!-- Compliance Links -->
+                        @can('Compliance')
+                            <div class="col-3 pt-1 pb-1">
+                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                    href="{{ route('attendance-reports.index') }}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Executive
+                                    Absence
+                                </a>
+                            </div>
+                        @endcan
+
+                        <!-- General Links -->
                         @can('General')
-                            {{-- <div class="row justify-content-center">
-                                <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                        href="{{ route('planning_data.index') }}">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                        Plan Entry
-                                    </a>
-
-                                </div>
-
-                            </div> --}}
-                        @endcan
-                        @can('QC')
-                            {{-- <div class="row justify-content-center">
-                                <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                        href="{{ route('planning_data.index') }}">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                        Plan Entry
-                                    </a>
-
-                                </div>
-
-                            </div> --}}
-                        @endcan
-                        @can('Supervisor')
-                            {{-- <div class="row justify-content-center">
-                                <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                        href="{{ route('planning_data.index') }}">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                        Plan Entry
-                                    </a>
-
-                                </div>
-
-                            </div> --}}
+                            <div class="col-3 pt-1 pb-1">
+                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                    href="{{ route('shipments.index') }}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Shipment
+                                    Status
+                                </a>
+                            </div>
                         @endcan
                     </div>
                 </div>
@@ -241,59 +289,59 @@
                     <div class="card-body">
                         <div class="row justify-content-center">
                             @can('Admin')
-                            <div class="col-3 pt-1 pb-1">
-                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                    href="{{ route('todayReport') }} " target="_blank">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                    Today Report Dashboard
-                                </a>
+                                {{-- <div class="col-3 pt-1 pb-1">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                        href="{{ route('todayReport') }} " target="_blank">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                        Today Report Dashboard
+                                    </a>
 
-                            </div>
+                                </div>
 
-                            <div class="col-3 pt-1 pb-1">
-                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                    href="{{ route('todayGraph') }} " target="_blank">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                    Dashboard Today Graph
-                                </a>
+                                <div class="col-3 pt-1 pb-1">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                        href="{{ route('todayGraph') }} " target="_blank">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                        Dashboard Today Graph
+                                    </a>
 
-                            </div>
-                            <div class="col-3 pt-1 pb-1">
-                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                    href="{{ route('Report') }} " target="_blank">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                    Report
-                                </a>
+                                </div> --}}
+                                <div class="col-3 pt-1 pb-1">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                        href="{{ route('Report') }} " target="_blank">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                        Report
+                                    </a>
 
-                            </div>
+                                </div>
 
-                            <div class="col-3 pt-1 pb-1">
-                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                    href="{{ route('dashboard.full') }} " target="_blank">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                    Full Dashboard
-                                </a>
+                                {{-- <div class="col-3 pt-1 pb-1">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                        href="{{ route('dashboard.full') }} " target="_blank">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                        Full Dashboard
+                                    </a>
 
-                            </div>
-                            <div class="col-3 pt-1 pb-1">
-                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                    href="{{ route('dashboard.summary') }} " target="_blank">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                    Summary Dashboard
-                                </a>
+                                </div>
+                                <div class="col-3 pt-1 pb-1">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                        href="{{ route('dashboard.summary') }} " target="_blank">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                        Summary Dashboard
+                                    </a>
 
-                            </div>
+                                </div>
 
-                            <div class="col-3 pt-1 pb-1">
-                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                    href="{{ route('dashboard.graphical') }} " target="_blank">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                    Graphical Dashboard
-                                </a>
+                                <div class="col-3 pt-1 pb-1">
+                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
+                                        href="{{ route('dashboard.graphical') }} " target="_blank">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                        Graphical Dashboard
+                                    </a>
 
-                            </div>
+                                </div> --}}
                             @endcan
-                            
+
                             <div class="col-3 pt-1 pb-1">
                                 <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                     href="{{ route('Report') }} " target="_blank">

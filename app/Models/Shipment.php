@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OtAchievement extends Model
+class Shipment extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'floor',
-        'two_hours_ot_persons',
-        'above_two_hours_ot_persons',
-        'achievement',
+        'shipment_date',
+        'export_qty',
+        'export_value',
         'remarks',
         'report_date'
     ];
 
     protected $casts = [
+        'shipment_date' => 'date',
         'report_date' => 'date'
     ];
 }

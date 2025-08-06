@@ -64,9 +64,9 @@
                         <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>Shipments</th>
-                                <th>DHU Reports</th>
                                 <th>Incident</th>
+                                <th>Improvement Area</th>
+                                <th>Other Information</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -74,68 +74,9 @@
                             @foreach($reports as $report)
                             <tr>
                                 <td>{{ $report->report_date->format('Y-m-d') }}</td>
-                                <td>
-                                    {{-- @if($report->shipments)
-                                        @foreach($report->shipments as $shipment)
-                                            {{ $shipment['date'] }}: 
-                                            {{ $shipment['export_qty'] }} pcs / 
-                                            ${{ number_format($shipment['export_value'], 2) }}
-                                            @if(!$loop->last)<br>@endif
-                                        @endforeach
-                                    @else
-                                        No shipments
-                                    @endif --}}
-
-                                    <!--display in a table-->
-                                    <table class="table table-sm">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Export Qty</th>
-                                                <th>Export Value ($)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($report->shipments as $shipment)
-                                            <tr>
-                                                <td>{{ $shipment['date'] }}</td>
-                                                <td>{{ $shipment['export_qty'] }} pcs</td>
-                                                <td>${{ number_format($shipment['export_value'], 2) }}</td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-
-                                </td>
-                                <td>
-
-                                    {{-- @if($report->dhu_reports)
-                                        @foreach($report->dhu_reports as $dhu)
-                                            {{ $dhu['floor'] }}: {{ $dhu['dhu_percentage'] }}%
-                                            @if(!$loop->last)<br>@endif
-                                        @endforeach
-                                    @else
-                                        No DHU data
-                                    @endif --}}
-                                    <!--display in a table-->
-                                    <table class="table table-sm">
-                                        <thead>
-                                            <tr>
-                                                <th>Floor</th>
-                                                <th>DHU %</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($report->dhu_reports as $dhu)
-                                            <tr>
-                                                <td>{{ $dhu['floor'] }}</td>
-                                                <td>{{ $dhu['dhu_percentage'] }}%</td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </td>
                                 <td>{{ Str::limit($report->remarkable_incident, 50) }}</td>
+                                <td>{{ Str::limit($report->improvement_area, 50) }}</td>
+                                <td>{{ Str::limit($report->other_information, 50) }}</td>
                                 <td>
                                     <a href="{{ route('daily-reports.edit', $report) }}" 
                                        class="btn btn-sm btn-warning">Edit</a>

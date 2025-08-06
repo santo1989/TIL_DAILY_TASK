@@ -13,7 +13,7 @@ use App\Http\Controllers\FloorTimingController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OperationDetailController;
 use App\Http\Controllers\OperatorAbsentAnalysisController;
-use App\Http\Controllers\OtAchievementController;
+use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\RecruitmentSummaryController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
@@ -184,7 +184,7 @@ Route::middleware('auth')->group(function () {
     //report
     // Route::post('/generateReport', [PlanningDataController::class, 'generateReport'])->name('generateReport');
 
-  
+
 
     Route::prefix('attendance')->group(function () {
         Route::get('/summary', [AttendanceSummaryController::class, 'index'])
@@ -256,13 +256,16 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{detail}', [OperationDetailController::class, 'destroy'])->name('operation-details.destroy');
     });
 
-    Route::prefix('ot-achievements')->group(function () {
-        Route::get('/', [OtAchievementController::class, 'index'])->name('ot-achievements.index');
-        Route::get('/download-template', [OtAchievementController::class, 'downloadTemplate'])->name('ot-achievements.download.template');
-        Route::post('/upload', [OtAchievementController::class, 'upload'])->name('ot-achievements.upload');
-        Route::get('/{achievement}/edit', [OtAchievementController::class, 'edit'])->name('ot-achievements.edit');
-        Route::put('/{achievement}', [OtAchievementController::class, 'update'])->name('ot-achievements.update');
-        Route::delete('/{achievement}', [OtAchievementController::class, 'destroy'])->name('ot-achievements.destroy');
+    Route::prefix('shipments')->group(function () {
+        Route::get('/', [ShipmentController::class, 'index'])->name('shipments.index');
+        Route::get('/create', [ShipmentController::class, 'create'])->name('shipments.create');
+        Route::post('/', [ShipmentController::class, 'store'])->name('shipments.store');
+        Route::get('/{shipment}',    [ShipmentController::class, 'show'])->name('shipments.show');
+        Route::get('/download-template', [ShipmentController::class, 'downloadTemplate'])->name('shipments.download.template');
+        Route::post('/upload', [ShipmentController::class, 'upload'])->name('shipments.upload');
+        Route::get('/{shipment}/edit', [ShipmentController::class, 'edit'])->name('shipments.edit');
+        Route::put('/{shipment}', [ShipmentController::class, 'update'])->name('shipments.update');
+        Route::delete('/{shipment}', [ShipmentController::class, 'destroy'])->name('shipments.destroy');
     });
 
     // routes/web.php
@@ -284,9 +287,6 @@ Route::middleware('auth')->group(function () {
         Route::put('/{report}', [DailyReportController::class, 'update'])->name('daily-reports.update');
         Route::delete('/{report}', [DailyReportController::class, 'destroy'])->name('daily-reports.destroy');
     });
-
-
-
 });
 
 Route::get('/todayReport', [ReportController::class, 'todayReport'])->name('todayReport');
