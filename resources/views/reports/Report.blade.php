@@ -778,12 +778,49 @@
                                 @foreach ($operationDetails as $operation)
                                     <tr>
                                         <td>{{ $operation->activity }}</td>
-                                        <td>{{ $operation->floor_1 }}</td>
-                                        <td>{{ $operation->floor_2 }}</td>
-                                        <td>{{ $operation->floor_3 }}</td>
-                                        <td>{{ $operation->floor_4 }}</td>
-                                        <td>{{ $operation->floor_5 }}</td>
-                                        <td>{{ $operation->result }}</td>
+                                        <!-- Format numeric fields conditionally -->
+                                        <td>
+                                            @if (is_numeric($operation->floor_1))
+                                                {{ floor($operation->floor_1) == $operation->floor_1 ? (int) $operation->floor_1 : number_format($operation->floor_1, 2, '.', '') }}
+                                            @else
+                                                {{ $operation->floor_1 }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if (is_numeric($operation->floor_2))
+                                                {{ floor($operation->floor_2) == $operation->floor_2 ? (int) $operation->floor_2 : number_format($operation->floor_2, 2, '.', '') }}
+                                            @else
+                                                {{ $operation->floor_2 }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if (is_numeric($operation->floor_3))
+                                                {{ floor($operation->floor_3) == $operation->floor_3 ? (int) $operation->floor_3 : number_format($operation->floor_3, 2, '.', '') }}
+                                            @else
+                                                {{ $operation->floor_3 }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if (is_numeric($operation->floor_4))
+                                                {{ floor($operation->floor_4) == $operation->floor_4 ? (int) $operation->floor_4 : number_format($operation->floor_4, 2, '.', '') }}
+                                            @else
+                                                {{ $operation->floor_4 }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if (is_numeric($operation->floor_5))
+                                                {{ floor($operation->floor_5) == $operation->floor_5 ? (int) $operation->floor_5 : number_format($operation->floor_5, 2, '.', '') }}
+                                            @else
+                                                {{ $operation->floor_5 }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if (is_numeric($operation->result))
+                                                {{ floor($operation->result) == $operation->result ? (int) $operation->result : number_format($operation->result, 2, '.', '') }}
+                                            @else
+                                                {{ $operation->result }}
+                                            @endif
+                                        </td>
                                         <td>{{ $operation->remarks }}</td>
                                     </tr>
                                 @endforeach

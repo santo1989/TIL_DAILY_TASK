@@ -58,7 +58,7 @@ class RolesTableSeeder extends Seeder
         ]);
 
         //9
-        Role::create([
+        Role::create(attributes: [
             'name' => 'TIL_Administrator'
         ]);
 
@@ -76,8 +76,36 @@ class RolesTableSeeder extends Seeder
         Role::create([
             'name' => 'Compliance_Supervisor'
         ]);
- 
 
-        
+        //13
+        Role::create([
+            'name' => 'Payroll_Admin'
+        ]);
+
+        //14
+        Role::create([
+            'name' => 'Payroll_Supervisor'
+        ]);
+
+        //15
+        Role::create([
+            'name' => 'Store'
+        ]);
+
+        //16
+        Role::create([
+            'name' => 'Store_Supervisor'
+        ]);
+
+        //17
+        Role::create([
+            'name' => 'Time_Section'
+        ]);
+
+        //18
+        Role::create([
+            'name' => 'Time_Section_Supervisor'
+        ]);
+
     }
 }

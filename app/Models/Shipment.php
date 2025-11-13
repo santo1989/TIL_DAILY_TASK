@@ -9,13 +9,15 @@ class Shipment extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'shipment_date',
-        'export_qty',
-        'export_value',
-        'remarks',
-        'report_date'
-    ];
+    // protected $fillable = [
+    //     'shipment_date',
+    //     'export_qty',
+    //     'export_value',
+    //     'remarks',
+    //     'report_date'
+    // ];
+
+    protected $guarded = [];
 
     protected $casts = [
         'shipment_date' => 'date',

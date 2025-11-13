@@ -11,17 +11,19 @@ class AttendanceSummary extends Model
 
     protected $table = 'attendance_summaries';
 
-    protected $fillable = [
-        'report_date',
-        'floor',
-        'onroll',
-        'present',
-        'absent',
-        'leave',
-        'ml',
-        'remarks'
-    ];
+    // protected $fillable = [
+    //     'report_date',
+    //     'floor',
+    //     'onroll',
+    //     'present',
+    //     'absent',
+    //     'leave',
+    //     'ml',
+    //     'remarks'
+    // ];
 
+
+    protected $guarded = [];
     protected $casts = [
         'report_date' => 'date',
     ];

@@ -10,15 +10,17 @@ class ComeBackReport extends Model
     use HasFactory;
 
     // ComeBackReport.php
-    protected $fillable = [
-        'report_date',
-        'employee_id',
-        'name',
-        'designation',
-        'floor',
-        'absent_days',
-        'reason',
-        'councilor_name',
-        'remarks'
-    ];
+    // protected $fillable = [
+    //     'report_date',
+    //     'employee_id',
+    //     'name',
+    //     'designation',
+    //     'floor',
+    //     'absent_days',
+    //     'reason',
+    //     'councilor_name',
+    //     'remarks'
+    // ];
+
+    protected $guarded = [];
 }

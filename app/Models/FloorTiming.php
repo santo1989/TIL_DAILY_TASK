@@ -9,16 +9,17 @@ class FloorTiming extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'floor',
-        'starting_time',
-        'starting_responsible',
-        'closing_time',
-        'closing_responsible',
-        'remarks',
-        'report_date'
-    ];
+    // protected $fillable = [
+    //     'floor',
+    //     'starting_time',
+    //     'starting_responsible',
+    //     'closing_time',
+    //     'closing_responsible',
+    //     'remarks',
+    //     'report_date'
+    // ];
 
+    protected $guarded = [];
     protected $casts = [
         'starting_time' => 'datetime:H:i',
         'closing_time' => 'datetime:H:i',

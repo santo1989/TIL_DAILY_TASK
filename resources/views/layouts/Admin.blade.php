@@ -9,20 +9,7 @@
             <x-slot name="pageHeader">
                 <div class="row">
                     <div class="col-12">Dashboard</div>
-                    {{-- <div class="col-3 text-left">
 
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <a class="dropdown-item" style="front-size: 20px; color: red;"
-                                onclick="event.preventDefault();
-                                        this.closest('form').submit();"><i
-                                    class="bi bi-box-arrow-right"></i>
-                            </a>
-
-                        </form>
-
-
-                    </div> --}}
                 </div>
             </x-slot>
         </x-backend.layouts.elements.breadcrumb>
@@ -38,8 +25,9 @@
 
                     <div class="card-body">
 
-                        @can('Admin')
+                        
                             <div class="row justify-content-center">
+                                @can('Admin')
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                         href="{{ route('home') }}">
@@ -83,13 +71,6 @@
                                         Designation Management
                                     </a>
                                 </div>
-                                <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                        href="{{ route('buyers.index') }}">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                        Buyer Management
-                                    </a>
-                                </div>
 
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
@@ -113,7 +94,9 @@
                                     </a>
 
                                 </div>
-
+                            @endcan
+                            <!--Admin, TIL_Supervisor, Payroll_Supervisor, HR_Supervisor can access-->
+                            @canany(['Admin', 'TIL_Supervisor', 'Payroll_Supervisor', 'HR_Supervisor'])
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                         href="{{ route('attendance.summary') }}">
@@ -122,6 +105,9 @@
                                     </a>
 
                                 </div>
+                            @endcanany
+                            <!--Admin, TIL_Supervisor, HR_Supervisor,Welfare,Welfare_Supervisor can access-->
+                            @canany(['Admin', 'TIL_Supervisor', 'HR_Supervisor', 'Welfare', 'Welfare_Supervisor'])
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                         href="{{ route('comeback.reports') }}">
@@ -137,14 +123,20 @@
                                         Operator Absent Analysis
                                     </a>
                                 </div>
+                            @endcanany
+                            <!--Admin, TIL_Supervisor, HR_Supervisor,HR ,TIL_Administrator, Compliance, Compliance_Supervisor, Time_Section  can access-->
+                            @canany(['Admin', 'TIL_Supervisor', 'HR_Supervisor', 'HR', 'TIL_Administrator',
+                                'Compliance', 'Compliance_Supervisor', 'Time_Section'])
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                         href="{{ route('attendance-reports.index') }}">
                                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                        Attendance Reports
+                                        Attendance Reports ( Lunch Out, Late Comer, To be Absent, On Leave )
                                     </a>
                                 </div>
-
+                            @endcanany
+                            <!--Admin, TIL_Supervisor, HR_Supervisor,HR  can access-->
+                            @canany(['Admin', 'TIL_Supervisor', 'HR_Supervisor', 'HR'])
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                         href="{{ route('recruitment-summaries.index') }}">
@@ -152,6 +144,9 @@
                                         Recruitment Summary
                                     </a>
                                 </div>
+                            @endcanany
+                            <!--Admin, TIL_Supervisor, HR_Supervisor,IE  can access-->
+                            @canany(['Admin', 'TIL_Supervisor', 'HR_Supervisor', 'IE'])
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                         href="{{ route('operation-details.index') }}">
@@ -159,7 +154,9 @@
                                         Operation Details, DHU Report
                                     </a>
                                 </div>
-
+                            @endcanany
+                            <!--Admin, TIL_Supervisor, HR_Supervisor,Store  can access-->
+                            @canany(['Admin', 'TIL_Supervisor', 'HR_Supervisor', 'Store'])
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                         href="{{ route('shipments.index') }}">
@@ -167,6 +164,9 @@
 
                                     </a>
                                 </div>
+                            @endcanany
+                            <!--Admin, TIL_Supervisor, HR_Supervisor,HR  can access-->
+                            @canany(['Admin', 'TIL_Supervisor', 'HR_Supervisor', 'HR'])
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                         href="{{ route('floor-timings.index') }}">
@@ -174,6 +174,9 @@
                                         Floor Timings
                                     </a>
                                 </div>
+                            @endcanany
+                            <!--Admin, TIL_Supervisor, HR_Supervisor  can access-->
+                            @canany(['Admin', 'TIL_Supervisor', 'HR_Supervisor'])
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                         href="{{ route('daily-reports.index') }}">
@@ -181,102 +184,8 @@
                                         Incident, Improvement Area, Other Information
                                     </a>
                                 </div>
-
-
-                            </div>
-                        @endcan
-
-
-                        <!-- HR Links -->
-                        @can('HR')
-                            <div class="col-3 pt-1 pb-1">
-                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                    href="{{ route('attendance.summary') }}">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>Attendance Summary
-                                </a>
-                            </div>
-                            <div class="col-3 pt-1 pb-1">
-                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                    href="{{ route('attendance-reports.index') }}">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Attendance
-                                    Reports
-                                </a>
-                            </div>
-                            <div class="col-3 pt-1 pb-1">
-                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                    href="{{ route('recruitment-summaries.index') }}">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Recruitment
-                                    Summary
-                                </a>
-                            </div>
-                            <div class="col-3 pt-1 pb-1">
-                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                    href="{{ route('floor-timings.index') }}">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Floor Timings
-                                </a>
-                            </div>
-                        @endcan
-
-                        <!-- Welfare Links -->
-                        @can('Welfare')
-                            <div class="col-3 pt-1 pb-1">
-                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                    href="{{ route('comeback.reports') }}">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>Come Back Reports
-                                </a>
-                            </div>
-                            <div class="col-3 pt-1 pb-1">
-                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                    href="{{ route('operator-absent-analysis.index') }}">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Operator
-                                    Absent Analysis
-                                </a>
-                            </div>
-                        @endcan
-
-                        <!-- IE Links -->
-                        @can('IE')
-                            <div class="col-3 pt-1 pb-1">
-                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                    href="{{ route('operation-details.index') }}">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Operation
-                                    Details
-                                </a>
-                            </div>
-                        @endcan
-
-                        <!-- TIL_Administrator Links -->
-                        @can('TIL_Administrator')
-                            <div class="col-3 pt-1 pb-1">
-                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                    href="{{ route('daily-reports.index') }}">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Incident
-                                    Reports
-                                </a>
-                            </div>
-                        @endcan
-
-                        <!-- Compliance Links -->
-                        @can('Compliance')
-                            <div class="col-3 pt-1 pb-1">
-                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                    href="{{ route('attendance-reports.index') }}">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Executive
-                                    Absence
-                                </a>
-                            </div>
-                        @endcan
-
-                        <!-- General Links -->
-                        @can('General')
-                            <div class="col-3 pt-1 pb-1">
-                                <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                    href="{{ route('shipments.index') }}">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Shipment
-                                    Status
-                                </a>
-                            </div>
-                        @endcan
+                            @endcanany
+                        </div>
                     </div>
                 </div>
             </div>
@@ -289,23 +198,6 @@
                     <div class="card-body">
                         <div class="row justify-content-center">
                             @can('Admin')
-                                {{-- <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                        href="{{ route('todayReport') }} " target="_blank">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                        Today Report Dashboard
-                                    </a>
-
-                                </div>
-
-                                <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                        href="{{ route('todayGraph') }} " target="_blank">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                        Dashboard Today Graph
-                                    </a>
-
-                                </div> --}}
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                         href="{{ route('Report') }} " target="_blank">
@@ -314,32 +206,6 @@
                                     </a>
 
                                 </div>
-
-                                {{-- <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                        href="{{ route('dashboard.full') }} " target="_blank">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                        Full Dashboard
-                                    </a>
-
-                                </div>
-                                <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                        href="{{ route('dashboard.summary') }} " target="_blank">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                        Summary Dashboard
-                                    </a>
-
-                                </div>
-
-                                <div class="col-3 pt-1 pb-1">
-                                    <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
-                                        href="{{ route('dashboard.graphical') }} " target="_blank">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                        Graphical Dashboard
-                                    </a>
-
-                                </div> --}}
                             @endcan
 
                             <div class="col-3 pt-1 pb-1">

@@ -7,7 +7,7 @@
     <div class="container">
         <div class="row mb-4">
             <div class="col-md-12 text-center">
-                <h2> Shipment Status, DHU Report, Others</h2>
+                <h2> Incidents Reports</h2>
             </div>
         </div>
 

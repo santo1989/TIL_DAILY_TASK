@@ -9,20 +9,23 @@ class OperatorAbsentAnalysis extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'report_date',
-        'floor',
-        'line',
-        'employee_id',
-        'name',
-        'designation',
-        'join_date',
-        'last_p_date',
-        'total_absent_days',
-        'absent_reason',
-        'come_back',
-        'remarks'
-    ];
+    // protected $fillable = [
+    //     'report_date',
+    //     'floor',
+    //     'line',
+    //     'employee_id',
+    //     'name',
+    //     'designation',
+    //     'join_date',
+    //     'last_p_date',
+    //     'total_absent_days',
+    //     'absent_reason',
+    //     'come_back',
+    //     'remarks'
+    // ];
+
+    protected $guarded = [];
+
     protected $casts = [
         'report_date' => 'date',
         'join_date' => 'date',

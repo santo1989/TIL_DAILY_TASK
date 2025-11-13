@@ -9,14 +9,15 @@ class DailyReport extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'report_date',
-        'shipments',
-        'dhu_reports',
-        'remarkable_incident',
-        'improvement_area',
-        'other_information'
-    ];
+    // protected $fillable = [
+    //     'report_date',
+    //     'shipments',
+    //     'dhu_reports',
+    //     'remarkable_incident',
+    //     'improvement_area',
+    //     'other_information'
+    // ];
+    protected $guarded = [];
 
     protected $casts = [
         'report_date' => 'date',

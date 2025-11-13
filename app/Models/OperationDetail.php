@@ -9,17 +9,19 @@ class OperationDetail extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'activity',
-        'floor_1',
-        'floor_2',
-        'floor_3',
-        'floor_4',
-        'floor_5',
-        'result',
-        'remarks',
-        'report_date'
-    ];
+    // protected $fillable = [
+    //     'activity',
+    //     'floor_1',
+    //     'floor_2',
+    //     'floor_3',
+    //     'floor_4',
+    //     'floor_5',
+    //     'result',
+    //     'remarks',
+    //     'report_date'
+    // ];
+
+    protected $guarded = [];
 
     protected $casts = [
         'report_date' => 'date'

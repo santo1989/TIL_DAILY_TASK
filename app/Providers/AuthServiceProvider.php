@@ -27,72 +27,91 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
 
+
+        // $roles = [
+        //     'Admin','General','HR','HR_Supervisor','Welfare','Welfare_Supervisor','IE','IE_Supervisor','TIL_Administrator','TIL_Supervisor' ,'Compliance','Compliance_Supervisor','Payroll_Admin','Payroll_Supervisor' ,'Store','Store_Supervisor','Time_Section','Time_Section_Supervisor'
+        // ];
+        // foreach ($roles as $index => $roleName) {
+        //     Gate::define($roleName, function (User $user) use ($index) {
+        //         return $user->role_id == ($index + 1);
+        //     });
+        // }
+
+        
+        // Define gates based on role IDs
         Gate::define('Admin', function (User $user) {
-
-            if ($user->role_id == 1) {
-                return true;
-            }
-
-            return false;
+            return $user->role_id == 1;
         });
 
         Gate::define('General', function (User $user) {
-
-            if ($user->role_id == 2) {
-                return true;
-            }
-            return false;
+            return $user->role_id == 2;
         });
 
-        // Gate::define('Factory', function (User $user) {
+        Gate::define('HR', function (User $user) {
+            return $user->role_id == 3;
+        });
 
-        //     if ($user->role_id == 3) {
-        //         return true;
-        //     }
-        //     return false;
-        // });
+        Gate::define('HR_Supervisor', function (User $user) {
+            return $user->role_id == 4;
+        });
 
-        // Gate::define('SupplyChain', function (User $user) {
+        Gate::define('Welfare', function (User $user) {
+            return $user->role_id == 5;
+        });
 
-        //     if ($user->role_id == 4) {
-        //         return true;
-        //     }
-        //     return false;
-        // });
+        Gate::define('Welfare_Supervisor', function (User $user) {
+            return $user->role_id == 6;
+        });
 
-        // Gate::define('Commercial', function (User $user) {
+        Gate::define('IE', function (User $user) {
+            return $user->role_id == 7;
+        });
 
-        //     if ($user->role_id == 5) {
-        //         return true;
-        //     }
-        //     return false;
-        // });
+        Gate::define('IE_Supervisor', function (User $user) {
+            return $user->role_id == 8;
+        });
 
-        // Gate::define('Accounts', function (User $user) {
+        Gate::define('TIL_Administrator', function (User $user) {
+            return $user->role_id == 9;
+        });
 
-        //     if ($user->role_id == 6) {
-        //         return true;
-        //     }
-        //     return false;
-        // });
+        Gate::define('TIL_Supervisor', function (User $user) {
+            return $user->role_id == 10;
+        });
 
-        // Gate::define('TNA-Factory', function ($user) {
-        //     return in_array($user->role->name, ['SuperVisor', 'Admin', 'Factory Merchandise']);
-        // });
+        Gate::define('Compliance', function (User $user) {
+            return $user->role_id == 11;
+        });
 
-    //     DB::table('roles')->get()->each(function ($role) {
-    //         Gate::define($role->name, function (User $user) use ($role) {
-    //             return $user->role_id == $role->id;
-    //         });
-    //     });
+        Gate::define('Compliance_Supervisor', function (User $user) {
+            return $user->role_id == 12;
+        });
 
-    //     Gate::define('QC-CURD', function ($user) {
-    //         return in_array($user->role->name, ['QC', 'Admin', 'Supervisor']);
-    //     });
-    //     Gate::define('QC-EDIT', function ($user) {
-    //         return in_array($user->role->name, ['Admin', 'Supervisor']);
-    //     });
+        Gate::define('Payroll_Admin', function (User $user) {
+            return $user->role_id == 13;
+        });
+
+        Gate::define('Payroll_Supervisor', function (User $user) {
+            return $user->role_id == 14;
+        });
+
+        Gate::define('Store', function (User $user) {
+            return $user->role_id == 15;
+        });
+
+        Gate::define('Store_Supervisor', function (User $user) {
+            return $user->role_id == 16;
+        });
+
+        Gate::define('Time_Section', function (User $user) {
+            return $user->role_id == 17;
+        });
+
+        Gate::define('Time_Section_Supervisor', function (User $user) {
+            return $user->role_id == 18;
+        });
+    
+        
      }
 }
