@@ -96,7 +96,7 @@
                                 </div>
                             @endcan
                             <!--Admin, TIL_Supervisor, Payroll_Supervisor, HR_Supervisor can access-->
-                            @canany(['Admin', 'TIL_Supervisor', 'Payroll_Supervisor', 'HR_Supervisor'])
+                            @canany(['Admin', 'TIL_Supervisor', 'Payroll_Admin', 'Payroll_Supervisor', 'HR_Supervisor'])
                                 <div class="col-3 pt-1 pb-1">
                                     <a class="btn btn-sm btn-outline-primary" style="width: 10rem;"
                                         href="{{ route('attendance.summary') }}">

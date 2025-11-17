@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\ComeBackReport;
 use Illuminate\Http\Request;
 use App\Imports\ComeBackReportImport;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ComeBackReportController extends Controller
@@ -20,7 +22,17 @@ class ComeBackReportController extends Controller
             $reportDate = $request->input('report_date') ?? now()->format('Y-m-d');
             Excel::import(new ComeBackReportImport($reportDate), $request->file('excel_file'));
             return back()->withMessage('Report imported successfully');
+        } catch (ValidationException $e) {
+            // Return validation messages from import so user can see which rows failed
+            $messages = [];
+            foreach ($e->errors() as $field => $msgs) {
+                foreach ($msgs as $m) {
+                    $messages[] = $m;
+                }
+            }
+            return back()->withErrors(['excel_file' => $messages]);
         } catch (\Exception $e) {
+            Log::error('ComeBackReport import error: ' . $e->getMessage());
             return back()->withErrors('Error importing file: ' . $e->getMessage());
         }
     }

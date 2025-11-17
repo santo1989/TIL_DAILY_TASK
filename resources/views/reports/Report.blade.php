@@ -411,7 +411,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($attendanceSummary as $summary)
+                                @forelse ($attendanceSummary as $summary)
                                     <tr>
                                         <td>{{ $summary->floor }}</td>
                                         <td>{{ $summary->onroll }}</td>
@@ -421,7 +421,11 @@
                                         <td>{{ $summary->ml }}</td>
                                         <td>{{ $summary->remarks }}</td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center">No records found</td>
+                                    </tr>
+                                @endforelse
                                 <tr>
                                     <td><strong>Total</strong></td>
                                     <td><strong>{{ $attendanceSummary->sum('onroll') }}</strong></td>
@@ -460,7 +464,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($comeBackReports as $index => $report)
+                                @forelse ($comeBackReports as $index => $report)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $report->employee_id }}</td>
@@ -472,7 +476,11 @@
                                         <td>{{ $report->councilor_name }}</td>
                                         <td>{{ $report->remarks }}</td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="9" class="text-center">No records found</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -491,15 +499,17 @@
                             $floors = $absentAnalyses->unique('floor')->pluck('floor')->filter();
                         @endphp
 
-                        @foreach ($floors as $floor)
+                        @forelse ($floors as $floor)
                             <div class="floor-tab {{ $loop->first ? 'active' : '' }}"
                                 data-floor="{{ $floor }}">
                                 {{ $floor }}
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="text-center">No records found</div>
+                        @endforelse
                     </div>
 
-                    @foreach ($floors as $floor)
+                    @forelse ($floors as $floor)
                         <div class="floor-content {{ $loop->first ? 'active' : '' }}"
                             data-floor="{{ $floor }}">
                             <div class="table-container">
@@ -520,7 +530,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($absentAnalyses->where('floor', $floor) as $index => $analysis)
+                                        @forelse ($absentAnalyses->where('floor', $floor) as $index => $analysis)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $analysis->employee_id }}</td>
@@ -537,12 +547,18 @@
                                                 </td>
                                                 <td>{{ $analysis->remarks }}</td>
                                             </tr>
-                                        @endforeach
+                                        @empty
+                                            <tr>
+                                                <td colspan="11" class="text-center">No records found</td>
+                                            </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="text-center">No records found</div>
+                    @endforelse
                 </div>
             </div>
 
@@ -595,7 +611,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($attendanceReports->where('type', 'late_comer') as $index => $report)
+                                    @forelse ($attendanceReports->where('type', 'late_comer') as $index => $report)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $report->employee_id }}</td>
@@ -604,7 +620,11 @@
                                             <td>{{ $report->in_time }}</td>
                                             <td>{{ $report->remarks }}</td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center">No records found</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -662,7 +682,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($attendanceReports->where('type', 'to_be_absent') as $index => $report)
+                                    @forelse ($attendanceReports->where('type', 'to_be_absent') as $index => $report)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $report->employee_id }}</td>
@@ -672,7 +692,11 @@
                                             <td>{{ $report->reason }}</td>
                                             <td>{{ $report->remarks }}</td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="7" class="text-center">No records found</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -775,7 +799,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($operationDetails as $operation)
+                                @forelse ($operationDetails as $operation)
                                     <tr>
                                         <td>{{ $operation->activity }}</td>
                                         <!-- Format numeric fields conditionally -->
@@ -823,7 +847,11 @@
                                         </td>
                                         <td>{{ $operation->remarks }}</td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="8" class="text-center">No records found</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -849,7 +877,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($otAchievements as $ot)
+                                @forelse ($otAchievements as $ot)
                                     <tr>
                                         <td>{{ $ot->floor }}</td>
                                         <td>{{ $ot->two_hours_ot_persons }}</td>
@@ -857,7 +885,11 @@
                                         <td>{{ number_format($ot->achievement, 2) }}</td>
                                         <td>{{ $ot->remarks }}</td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center">No records found</td>
+                                    </tr>
+                                @endforelse
                                 <tr>
                                     <td><strong>Total</strong></td>
                                     <td><strong>{{ $otAchievements->sum('two_hours_ot_persons') }}</strong></td>
@@ -902,13 +934,17 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($dailyReport->shipments as $shipment)
+                                            @forelse ($dailyReport->shipments as $shipment)
                                                 <tr>
                                                     <td>{{ $shipment['date'] }}</td>
                                                     <td>{{ $shipment['export_qty'] }} pcs</td>
                                                     <td>${{ number_format($shipment['export_value'], 2) }}</td>
                                                 </tr>
-                                            @endforeach
+                                            @empty
+                                                <tr>
+                                                    <td colspan="3" class="text-center">No records found</td>
+                                                </tr>
+                                            @endforelse
                                         </tbody>
                                     </table>
                                 @else
@@ -985,7 +1021,7 @@
                 // 1. Attendance Summary
                 worksheet.addRow(['1. Attendance Summary']);
                 worksheet.addRow(['Floor', 'Onroll', 'Present', 'Absent', 'Leave', 'M/L', 'Remarks']);
-                @foreach ($attendanceSummary as $summary)
+                @forelse ($attendanceSummary as $summary)
                     worksheet.addRow([
                         '{{ $summary->floor }}',
                         {{ $summary->onroll }},
@@ -995,7 +1031,9 @@
                         {{ $summary->ml }},
                         '{{ $summary->remarks }}'
                     ]);
-                @endforeach
+                @empty
+                    worksheet.addRow(['No records found', '', '', '', '', '', '']);
+                @endforelse
                 worksheet.addRow([
                     'Total',
                     {{ $attendanceSummary->sum('onroll') }},
@@ -1012,7 +1050,7 @@
                 worksheet.addRow(['Sl', 'ID', 'Name', 'Designation', 'Floor', 'No of absent days',
                     'Reason for Absent', 'Councilor Name', 'Remarks'
                 ]);
-                @foreach ($comeBackReports as $index => $report)
+                @forelse ($comeBackReports as $index => $report)
                     worksheet.addRow([
                         {{ $index + 1 }},
                         '{{ $report->employee_id }}',
@@ -1024,7 +1062,9 @@
                         '{{ $report->councilor_name }}',
                         '{{ $report->remarks }}'
                     ]);
-                @endforeach
+                @empty
+                    worksheet.addRow(['No records found', '', '', '', '', '', '', '', '']);
+                @endforelse
                 worksheet.addRow([]); // Empty row
 
                 // 3. Operator Absent Analysis Report
@@ -1032,12 +1072,12 @@
                     $floors = $absentAnalyses->unique('floor')->pluck('floor')->filter();
                 @endphp
                 worksheet.addRow(['3. Operator Absent Analysis Report']);
-                @foreach ($floors as $floor)
+                @forelse ($floors as $floor)
                     worksheet.addRow(['Floor: {{ $floor }}']);
                     worksheet.addRow(['Sl #', 'ID Card NO.', 'Name', 'Designation', 'Join Date',
                         'Last P. Date', 'Line', 'Total AB', 'Absent Reason', 'Come Back', 'Remarks'
                     ]);
-                    @foreach ($absentAnalyses->where('floor', $floor) as $index => $analysis)
+                    @forelse ($absentAnalyses->where('floor', $floor) as $index => $analysis)
                         worksheet.addRow([
                             {{ $index + 1 }},
                             '{{ $analysis->employee_id }}',
@@ -1051,9 +1091,13 @@
                             '{{ $analysis->come_back ? \Carbon\Carbon::parse($analysis->come_back)->format('d.m.y') : '' }}',
                             '{{ $analysis->remarks }}'
                         ]);
-                    @endforeach
+                    @empty
+                        worksheet.addRow(['No records found', '', '', '', '', '', '', '', '', '', '']);
+                    @endforelse
                     worksheet.addRow([]); // Empty row after each floor
-                @endforeach
+                @empty
+                    worksheet.addRow(['No records found']);
+                @endforelse
                 worksheet.addRow([]); // Empty row after section
 
                 // 4. Staff & Executive's Status
@@ -1062,7 +1106,7 @@
                 // 4.1 Late Comer
                 worksheet.addRow(['5.1 Late Comer (Sr.Executive to Above)']);
                 worksheet.addRow(['Sl', 'ID', 'Name', 'Designation', 'In Time', 'Remarks']);
-                @foreach ($attendanceReports->where('type', 'late_comer') as $index => $report)
+                @forelse ($attendanceReports->where('type', 'late_comer') as $index => $report)
                     worksheet.addRow([
                         {{ $index + 1 }},
                         '{{ $report->employee_id }}',
@@ -1071,7 +1115,9 @@
                         '{{ $report->in_time }}',
                         '{{ $report->remarks }}'
                     ]);
-                @endforeach
+                @empty
+                    worksheet.addRow(['No records found', '', '', '', '', '']);
+                @endforelse
                 worksheet.addRow([]); // Empty row
 
                 // 4.2 On Leave
@@ -1079,7 +1125,7 @@
                 worksheet.addRow(['Sl', 'ID', 'Name', 'Designation', 'Floor', 'Reason of Leave',
                     'Remarks'
                 ]);
-                @foreach ($attendanceReports->where('type', 'on_leave') as $index => $report)
+                @forelse ($attendanceReports->where('type', 'on_leave') as $index => $report)
                     worksheet.addRow([
                         {{ $index + 1 }},
                         '{{ $report->employee_id }}',
@@ -1089,7 +1135,9 @@
                         '{{ $report->reason }}',
                         '{{ $report->remarks }}'
                     ]);
-                @endforeach
+                @empty
+                    worksheet.addRow(['No records found', '', '', '', '', '', '']);
+                @endforelse
                 worksheet.addRow([]); // Empty row
 
                 // 4.3 To be Absent
@@ -1097,7 +1145,7 @@
                 worksheet.addRow(['Sl', 'ID', 'Name', 'Designation', 'Floor', 'Reason of Absent',
                     'Remarks'
                 ]);
-                @foreach ($attendanceReports->where('type', 'to_be_absent') as $index => $report)
+                @forelse ($attendanceReports->where('type', 'to_be_absent') as $index => $report)
                     worksheet.addRow([
                         {{ $index + 1 }},
                         '{{ $report->employee_id }}',
@@ -1107,7 +1155,9 @@
                         '{{ $report->reason }}',
                         '{{ $report->remarks }}'
                     ]);
-                @endforeach
+                @empty
+                    worksheet.addRow(['No records found', '', '', '', '', '', '']);
+                @endforelse
                 worksheet.addRow([]); // Empty row
 
                 // 5. Recruitment Summary
@@ -1115,7 +1165,7 @@
                 worksheet.addRow(['#', 'Candidate', 'Selected', 'Designation', 'Interview Date',
                     'Test Details', 'Salary', 'Joining Date'
                 ]);
-                @foreach ($recruitmentSummary as $summary)
+                @forelse ($recruitmentSummary as $summary)
                     @if ($summary->selected == 'Yes')
                         worksheet.addRow([
                             {{ $loop->iteration }},
@@ -1128,7 +1178,9 @@
                             '{{ $summary->probable_date_of_joining ? \Carbon\Carbon::parse($summary->probable_date_of_joining)->format('Y-m-d') : 'N/A' }}'
                         ]);
                     @endif
-                @endforeach
+                @empty
+                    worksheet.addRow(['No records found', '', '', '', '', '', '', '']);
+                @endforelse
                 worksheet.addRow([]); // Empty row
 
                 // 6. Operation Details
