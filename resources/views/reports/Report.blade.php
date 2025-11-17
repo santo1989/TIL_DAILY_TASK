@@ -364,6 +364,11 @@
                         <i class="fas fa-filter"></i> Filter
                     </button>
                 </form>
+                <!--Reset & Reload Button-->
+                <button type="reset" class="btn" onclick="window.location='{{ route('Report') }}'">
+                    <i class="fas fa-sync"></i> Reset & Reload
+                </button>
+                <!--Download Excel Button-->
                 <button class="btn btn-download" id="downloadBtn">
                     <i class="fas fa-download"></i> Download Excel
                 </button>
@@ -799,7 +804,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($operationDetails as $operation)
+                                @php
+                                    //    dd($operationDetails) ;
+                                    // only show array 0 to 8 value
+                                    $operationList = $operationDetails->slice(0, 8);
+                                @endphp
+
+                                {{-- @php
+                                    // exclude OT / Achievement / DHU related activities from the Operation Details table
+                                    $excludedActivities = [
+                                        '2 Hours OT Persons',
+                                        'Above 2 Hours OT Persons',
+                                        'Above 2 Hours OT Persons', 'Above 2 Hours  OT Persons',
+                                        'Achievement',
+                                        'DHU%',
+                                    ];
+                                    $operationList = $operationDetails->reject(function ($o) use ($excludedActivities) {
+                                        return in_array(trim((string) ($o->activity ?? '')), $excludedActivities, true);
+                                    });
+                                @endphp --}}
+
+                                @forelse ($operationList as $operation)
                                     <tr>
                                         <td>{{ $operation->activity }}</td>
                                         <!-- Format numeric fields conditionally -->
@@ -858,13 +883,21 @@
                 </div>
             </div>
 
-            <!-- Shipments Section -->
+            <!-- 9. Details of O.T Achievement (derived from Operation Details) -->
             <div class="section">
                 <div class="section-header">
                     <i class="fas fa-clock"></i>
                     <span>9. Details of O.T Achievement</span>
                 </div>
                 <div class="section-content">
+                    @php
+                        // derive OT related activities from operationDetails
+                        $twoHoursAct = $operationDetails->firstWhere('activity', '2 Hours OT Persons');
+                        $aboveTwoAct = $operationDetails->firstWhere('activity', 'Above 2 Hours OT Persons');
+                        $achievementAct = $operationDetails->firstWhere('activity', 'Achievement');
+                        $floorLabels = ['1st Floor', '2nd Floor', '3rd Floor', '4th Floor', '5th Floor'];
+                    @endphp
+
                     <div class="table-container">
                         <table>
                             <thead>
@@ -877,13 +910,20 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($otAchievements as $ot)
+                                @forelse ($floorLabels as $i => $label)
+                                    @php
+                                        $idx = $i + 1;
+                                        // get raw values (may be string like "3.000")
+                                        $twoVal = $twoHoursAct ? $twoHoursAct->{'floor_' . $idx} ?? 0 : 0;
+                                        $aboveVal = $aboveTwoAct ? $aboveTwoAct->{'floor_' . $idx} ?? 0 : 0;
+                                        $achVal = $achievementAct ? $achievementAct->{'floor_' . $idx} ?? '' : '';
+                                    @endphp
                                     <tr>
-                                        <td>{{ $ot->floor }}</td>
-                                        <td>{{ $ot->two_hours_ot_persons }}</td>
-                                        <td>{{ $ot->above_two_hours_ot_persons }}</td>
-                                        <td>{{ number_format($ot->achievement, 2) }}</td>
-                                        <td>{{ $ot->remarks }}</td>
+                                        <td>{{ $label }}</td>
+                                        <td>{{ is_numeric($twoVal) ? (int) $twoVal : $twoVal }}</td>
+                                        <td>{{ is_numeric($aboveVal) ? (int) $aboveVal : $aboveVal }}</td>
+                                        <td>{{ is_numeric($achVal) ? (int) $achVal : $achVal }}</td>
+                                        <td>{{ $achievementAct ? $achievementAct->remarks ?? '' : '' }}</td>
                                     </tr>
                                 @empty
                                     <tr>
@@ -892,11 +932,216 @@
                                 @endforelse
                                 <tr>
                                     <td><strong>Total</strong></td>
-                                    <td><strong>{{ $otAchievements->sum('two_hours_ot_persons') }}</strong></td>
-                                    <td><strong>{{ $otAchievements->sum('above_two_hours_ot_persons') }}</strong></td>
-                                    <td><strong>{{ $otAchievements->sum('achievement') }}</strong></td>
+                                    <td><strong>{{ $twoHoursAct ? (int) collect([$twoHoursAct->floor_1, $twoHoursAct->floor_2, $twoHoursAct->floor_3, $twoHoursAct->floor_4, $twoHoursAct->floor_5])->sum() : 0 }}</strong>
+                                    </td>
+                                    <td><strong>{{ $aboveTwoAct ? (int) collect([$aboveTwoAct->floor_1, $aboveTwoAct->floor_2, $aboveTwoAct->floor_3, $aboveTwoAct->floor_4, $aboveTwoAct->floor_5])->sum() : 0 }}</strong>
+                                    </td>
+                                    <td><strong>{{ $achievementAct ? (int) collect([$achievementAct->floor_1, $achievementAct->floor_2, $achievementAct->floor_3, $achievementAct->floor_4, $achievementAct->floor_5])->sum() : '' }}</strong>
+                                    </td>
                                     <td></td>
                                 </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. DHU% (from Operation Details activity 'DHU%') -->
+            <div class="section">
+                <div class="section-header">
+                    <i class="fas fa-percentage"></i>
+                    <span>10. DHU%</span>
+                </div>
+                <div class="section-content">
+                    @php
+                        $dhuAct =
+                            $operationDetails->firstWhere('activity', 'DHU%') ?:
+                            $operationDetails->firstWhere('activity', 'DHU') ?:
+                            $operationDetails->firstWhere('activity', 'DHU %');
+                    @endphp
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Floor</th>
+                                    <th>DHU%</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if ($dhuAct)
+                                    <tr>
+                                        <td>1st Floor</td>
+                                        <td>{{ is_numeric($dhuAct->floor_1) ? number_format($dhuAct->floor_1 > 1 ? $dhuAct->floor_1 : $dhuAct->floor_1 * 100, 2) . '%' : $dhuAct->floor_1 }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2nd Floor</td>
+                                        <td>{{ is_numeric($dhuAct->floor_2) ? number_format($dhuAct->floor_2 > 1 ? $dhuAct->floor_2 : $dhuAct->floor_2 * 100, 2) . '%' : $dhuAct->floor_2 }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3rd Floor</td>
+                                        <td>{{ is_numeric($dhuAct->floor_3) ? number_format($dhuAct->floor_3 > 1 ? $dhuAct->floor_3 : $dhuAct->floor_3 * 100, 2) . '%' : $dhuAct->floor_3 }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>4th Floor</td>
+                                        <td>{{ is_numeric($dhuAct->floor_4) ? number_format($dhuAct->floor_4 > 1 ? $dhuAct->floor_4 : $dhuAct->floor_4 * 100, 2) . '%' : $dhuAct->floor_4 }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>5th Floor</td>
+                                        <td>{{ is_numeric($dhuAct->floor_5) ? number_format($dhuAct->floor_5 > 1 ? $dhuAct->floor_5 : $dhuAct->floor_5 * 100, 2) . '%' : $dhuAct->floor_5 }}
+                                        </td>
+                                    </tr>
+                                @else
+                                    <tr>
+                                        <td colspan="2" class="text-center">No records found</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. Shipments (from shipments table) -->
+            <div class="section">
+                <div class="section-header">
+                    <i class="fas fa-ship"></i>
+                    <span>11. Shipments</span>
+                </div>
+                <div class="section-content">
+                    @php
+                        $shipData = isset($shipments)
+                            ? $shipments
+                            : (isset($dailyReport) && $dailyReport->shipments
+                                ? collect($dailyReport->shipments)
+                                : collect());
+                    @endphp
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Export Qty</th>
+                                    <th>Export Value ($)</th>
+                                    <th>Destination/Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($shipData as $shipment)
+                                    @php
+                                        // shipment may be array or object
+                                        $sDate = Carbon\Carbon::parse(
+                                            is_array($shipment)
+                                                ? $shipment['shipment_date'] ?? ''
+                                                : $shipment->shipment_date ?? '',
+                                        )->format('Y-m-d');
+                                        // $sDate = is_array($shipment) ? ($shipment['shipment_date'] ?? '') : ($shipment->shipment_date ?? '');
+                                        $sQty = is_array($shipment)
+                                            ? $shipment['export_qty'] ?? ''
+                                            : $shipment->export_qty ?? '';
+                                        $sVal = is_array($shipment)
+                                            ? $shipment['export_value'] ?? ''
+                                            : $shipment->export_value ?? '';
+                                        $sNotes = is_array($shipment)
+                                            ? $shipment['destination'] ?? ($shipment['notes'] ?? '')
+                                            : $shipment->destination ?? ($shipment->notes ?? '');
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $sDate }}</td>
+                                        <td>{{ $sQty }} pcs</td>
+                                        <td>${{ is_numeric($sVal) ? number_format($sVal, 2) : $sVal }}</td>
+                                        <td>{{ $sNotes }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center">No records found</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 12. Floor Timings (from floor_timings table) -->
+            <div class="section">
+                <div class="section-header">
+                    <i class="fas fa-clock"></i>
+                    <span>12. Floor Timings</span>
+                </div>
+                <div class="section-content">
+                    @php
+                        // prefer controller provided variable $floorTimings, else try $floor_timings, else empty
+                        $floorTimingsData = $floorTimings ?? ($floor_timings ?? collect());
+
+                        // Local helper to normalize responsible values to a readable string.
+                        // Accepts arrays, JSON strings, objects, or scalars and returns
+                        // a string like: "Name (Role), Name (Role)" or empty string.
+                        $normalizeResponsible = function ($raw) {
+                            if (is_string($raw)) {
+                                $decoded = json_decode($raw, true);
+                                $arr = is_array($decoded) ? $decoded : null;
+                            } elseif (is_array($raw)) {
+                                $arr = $raw;
+                            } elseif (is_object($raw)) {
+                                $arr = (array) $raw;
+                            } else {
+                                $arr = null;
+                            }
+
+                            if (is_array($arr)) {
+                                $parts = [];
+                                foreach ($arr as $p) {
+                                    if (is_array($p)) {
+                                        $name = $p['name'] ?? ($p['Name'] ?? '');
+                                        $role = $p['role'] ?? ($p['Role'] ?? '');
+                                    } elseif (is_object($p)) {
+                                        $name = $p->name ?? '';
+                                        $role = $p->role ?? '';
+                                    } else {
+                                        $name = (string) $p;
+                                        $role = '';
+                                    }
+                                    $parts[] = trim($name . ($role ? " ({$role})" : ''));
+                                }
+                                return implode(', ', array_filter($parts));
+                            }
+
+                            return is_null($raw) ? '' : (string) $raw;
+                        };
+                    @endphp
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Floor</th>
+                                    <th>Starting Time</th>
+                                    <th>Starting Responsible</th>
+                                    <th>Closing Time</th>
+                                    <th>Closing Responsible</th>
+                                    <th>Remarks</th>
+                                    <th>Report Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($floorTimingsData as $ft)
+                                    <tr>
+                                        <td>{{ $ft->floor }}</td>
+                                        <td>{{ $ft->starting_time }}</td>
+                                        <td>{{ $normalizeResponsible($ft->starting_responsible) }}</td>
+                                        <td>{{ $ft->closing_time }}</td>
+                                        <td>{{ $normalizeResponsible($ft->closing_responsible) }}</td>
+                                        <td>{{ $ft->remarks }}</td>
+                                        <td>{{ $ft->report_date }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center">No records found</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -908,49 +1153,11 @@
                 <div class="section">
                     <div class="section-header">
                         <i class="fas fa-file-alt"></i>
-                        <span>Daily Reports & Remarks</span>
+                        <span>13. Daily Reports & Remarks</span>
                     </div>
                     <div class="section-content">
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div>
-                                <h3 style="margin-bottom: 15px; color: var(--primary);">Shipments</h3>
-                                @if ($dailyReport->shipments)
-                                    {{-- <ul style="list-style-type: none; padding-left: 0;">
-                                    @foreach (json_decode($dailyReport->shipments) as $shipment)
-                                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-                                        <i class="fas fa-shipping-fast color-secondary"></i> 
-                                        <strong>{{ $shipment->order ?? 'N/A' }}</strong> - 
-                                        {{ $shipment->units ?? 'N/A' }} to {{ $shipment->destination ?? 'N/A' }}
-                                    </li>
-                                    @endforeach
 
-                                </ul> --}}
-                                    <table class="table table-sm">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Export Qty</th>
-                                                <th>Export Value ($)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @forelse ($dailyReport->shipments as $shipment)
-                                                <tr>
-                                                    <td>{{ $shipment['date'] }}</td>
-                                                    <td>{{ $shipment['export_qty'] }} pcs</td>
-                                                    <td>${{ number_format($shipment['export_value'], 2) }}</td>
-                                                </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="3" class="text-center">No records found</td>
-                                                </tr>
-                                            @endforelse
-                                        </tbody>
-                                    </table>
-                                @else
-                                    <p>No shipments today</p>
-                                @endif
-                            </div>
                             <div>
                                 <h3 style="margin-bottom: 15px; color: var(--primary);">Remarks</h3>
                                 <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
@@ -969,15 +1176,15 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
             @endif
         </div>
+    </div>
+    </div>
 
-        <div class="footer">
-            <p>Generated on {{ \Carbon\Carbon::now()->format('F d, Y H:i') }} | Tosrifa Industries Ltd. - Factory
-                Operations Dashboard</p>
-        </div>
+    <div class="footer">
+        <p>Generated on {{ \Carbon\Carbon::now()->format('F d, Y H:i') }} | Tosrifa Industries Ltd. - Factory
+            Operations Dashboard</p>
+    </div>
     </div>
 
     <script>
@@ -1188,7 +1395,7 @@
                 worksheet.addRow(['Activities', '1st Floor', '2nd Floor', '3rd Floor', '4th Floor',
                     '5th Floor', 'Total/Average', 'Remarks'
                 ]);
-                @foreach ($operationDetails as $operation)
+                @foreach ($operationList as $operation)
                     worksheet.addRow([
                         '{{ $operation->activity }}',
                         {{ $operation->floor_1 }},
@@ -1202,34 +1409,79 @@
                 @endforeach
                 worksheet.addRow([]); // Empty row
 
-                // 7. Shipments
+                // 9. Details of O.T Achievement (derived from Operation Details)
+                @php
+                    $twoHoursAct = $operationDetails->firstWhere('activity', '2 Hours OT Persons');
+                    $aboveTwoAct = $operationDetails->firstWhere('activity', 'Above 2 Hours OT Persons');
+                    $achievementAct = $operationDetails->firstWhere('activity', 'Achievement');
+                    $floorLabels = ['1st Floor', '2nd Floor', '3rd Floor', '4th Floor', '5th Floor'];
+                @endphp
                 worksheet.addRow(['9. Details of O.T Achievement']);
                 worksheet.addRow(['Floor', '2 Hours OT Persons', 'Above 2 Hours OT Persons', 'Achievement',
                     'Remarks'
                 ]);
-                @foreach ($otAchievements as $ot)
+                @foreach ($floorLabels as $i => $label)
+                    @php $idx = $i + 1; @endphp
+                    @php
+                        $twoVal = $twoHoursAct ? $twoHoursAct->{'floor_' . $idx} ?? 0 : 0;
+                        $aboveVal = $aboveTwoAct ? $aboveTwoAct->{'floor_' . $idx} ?? 0 : 0;
+                        $achVal = $achievementAct ? $achievementAct->{'floor_' . $idx} ?? '' : '';
+                    @endphp
                     worksheet.addRow([
-                        '{{ $ot->floor }}',
-                        {{ $ot->two_hours_ot_persons }},
-                        {{ $ot->above_two_hours_ot_persons }},
-                        {{ number_format($ot->achievement, 2) }},
-                        '{{ $ot->remarks }}'
+                        '{{ $label }}',
+                        {{ is_numeric($twoVal) ? (int) $twoVal : "'" . $twoVal . "'" }},
+                        {{ is_numeric($aboveVal) ? (int) $aboveVal : "'" . $aboveVal . "'" }},
+                        '{{ is_numeric($achVal) ? (int) $achVal : $achVal }}',
+                        '{{ $achievementAct ? $achievementAct->remarks ?? '' : '' }}'
                     ]);
                 @endforeach
                 worksheet.addRow([
                     'Total',
-                    {{ $otAchievements->sum('two_hours_ot_persons') }},
-                    {{ $otAchievements->sum('above_two_hours_ot_persons') }},
-                    {{ $otAchievements->sum('achievement') }},
+                    {{ $twoHoursAct ? (int) collect([$twoHoursAct->floor_1, $twoHoursAct->floor_2, $twoHoursAct->floor_3, $twoHoursAct->floor_4, $twoHoursAct->floor_5])->sum() : 0 }},
+                    {{ $aboveTwoAct ? (int) collect([$aboveTwoAct->floor_1, $aboveTwoAct->floor_2, $aboveTwoAct->floor_3, $aboveTwoAct->floor_4, $aboveTwoAct->floor_5])->sum() : 0 }},
+                    {{ $achievementAct ? (int) collect([$achievementAct->floor_1, $achievementAct->floor_2, $achievementAct->floor_3, $achievementAct->floor_4, $achievementAct->floor_5])->sum() : '' }},
                     ''
                 ]);
+                worksheet.addRow([]); // Empty row
+
+                // 10. DHU% (from Operation Details)
+                @php
+                    $dhuAct = $operationDetails->firstWhere('activity', 'DHU%') ?: $operationDetails->firstWhere('activity', 'DHU') ?: $operationDetails->firstWhere('activity', 'DHU %');
+                @endphp
+                worksheet.addRow(['10. DHU%']);
+                worksheet.addRow(['Floor', 'DHU%']);
+                @if ($dhuAct)
+                    worksheet.addRow(['1st Floor',
+                        '{{ is_numeric($dhuAct->floor_1) ? number_format($dhuAct->floor_1 > 1 ? $dhuAct->floor_1 : $dhuAct->floor_1 * 100, 2) . '%' : $dhuAct->floor_1 }}'
+                    ]);
+                    worksheet.addRow(['2nd Floor',
+                        '{{ is_numeric($dhuAct->floor_2) ? number_format($dhuAct->floor_2 > 1 ? $dhuAct->floor_2 : $dhuAct->floor_2 * 100, 2) . '%' : $dhuAct->floor_2 }}'
+                    ]);
+                    worksheet.addRow(['3rd Floor',
+                        '{{ is_numeric($dhuAct->floor_3) ? number_format($dhuAct->floor_3 > 1 ? $dhuAct->floor_3 : $dhuAct->floor_3 * 100, 2) . '%' : $dhuAct->floor_3 }}'
+                    ]);
+                    worksheet.addRow(['4th Floor',
+                        '{{ is_numeric($dhuAct->floor_4) ? number_format($dhuAct->floor_4 > 1 ? $dhuAct->floor_4 : $dhuAct->floor_4 * 100, 2) . '%' : $dhuAct->floor_4 }}'
+                    ]);
+                    worksheet.addRow(['5th Floor',
+                        '{{ is_numeric($dhuAct->floor_5) ? number_format($dhuAct->floor_5 > 1 ? $dhuAct->floor_5 : $dhuAct->floor_5 * 100, 2) . '%' : $dhuAct->floor_5 }}'
+                    ]);
+                @else
+                    worksheet.addRow(['No records found', '']);
+                @endif
+                worksheet.addRow([]); // Empty row
 
                 //// Efficiency data show in table #
                 worksheet.addRow([]); // Empty row
                 worksheet.addRow(['Efficiency Data']);
                 worksheet.addRow(['Floor', 'Efficiency (%)']);
+                // Prepare efficiency data (convert model to array where possible) to be safely embedded in JS
+                @php
+                    $__effModel = $operationDetails->where('activity', 'Efficiency')->first();
+                    $__effArray = $__effModel ? $__effModel->toArray() : null;
+                @endphp
                 // Get efficiency data from operation details
-                const efficiencyData = {!! json_encode($operationDetails->where('activity', 'Efficiency')->first()) !!};
+                const efficiencyData = {!! json_encode($__effArray) !!};
                 if (efficiencyData) {
                     worksheet.addRow([
                         '1st Floor',
@@ -1256,21 +1508,33 @@
                 }
                 worksheet.addRow([]); // Empty row
 
-                // 8. Daily Report & Remarks
-                @if ($dailyReport)
-                    worksheet.addRow(['Daily Report & Remarks']);
-                    worksheet.addRow(['Shipments']);
-                    worksheet.addRow(['Date', 'Export Qty', 'Export Value ($)']);
-
-                    @foreach ($dailyReport->shipments as $shipment)
+                // 11. Shipments & Daily Report Remarks
+                @php
+                    $shipData = isset($shipments) ? $shipments : (isset($dailyReport) && $dailyReport->shipments ? collect($dailyReport->shipments) : collect());
+                    $floorTimingsData = $floorTimings ?? ($floor_timings ?? collect());
+                @endphp
+                @if ($shipData && $shipData->count())
+                    worksheet.addRow(['11. Shipments']);
+                    worksheet.addRow(['Date', 'Export Qty', 'Export Value ($)', 'Destination/Notes']);
+                    @foreach ($shipData as $shipment)
+                        @php
+                            $sDate = is_array($shipment) ? $shipment['date'] ?? '' : $shipment->date ?? '';
+                            $sQty = is_array($shipment) ? $shipment['export_qty'] ?? '' : $shipment->export_qty ?? '';
+                            $sVal = is_array($shipment) ? $shipment['export_value'] ?? '' : $shipment->export_value ?? '';
+                            $sNotes = is_array($shipment) ? $shipment['destination'] ?? ($shipment['notes'] ?? '') : $shipment->destination ?? ($shipment->notes ?? '');
+                        @endphp
                         worksheet.addRow([
-                            '{{ $shipment['date'] }}',
-                            '{{ $shipment['export_qty'] }} pcs',
-                            {{ $shipment['export_value'] }}
+                            '{{ $sDate }}',
+                            '{{ $sQty }} pcs',
+                            {{ $sVal }},
+                            '{{ $sNotes }}'
                         ]);
                     @endforeach
-
                     worksheet.addRow([]); // Empty row
+                @endif
+
+                // Daily Report Remarks (if any)
+                @if ($dailyReport)
                     worksheet.addRow(['Remarks']);
 
                     @if ($dailyReport->improvement_area)
@@ -1286,6 +1550,30 @@
                     @endif
 
                     worksheet.addRow([]); // Empty row
+                @endif
+
+                // 12. Floor Timings
+                @if ($floorTimingsData && $floorTimingsData->count())
+                    worksheet.addRow(['12. Floor Timings']);
+                    worksheet.addRow(['Floor', 'Starting Time', 'Starting Responsible', 'Closing Time',
+                        'Closing Responsible', 'Remarks', 'Report Date'
+                    ]);
+                    @foreach ($floorTimingsData as $ft)
+                        @php
+                            $startResp = $normalizeResponsible($ft->starting_responsible);
+                            $closeResp = $normalizeResponsible($ft->closing_responsible);
+                        @endphp
+                        worksheet.addRow([
+                            '{{ $ft->floor }}',
+                            '{{ $ft->starting_time }}',
+                            '{{ $startResp }}',
+                            '{{ $ft->closing_time }}',
+                            '{{ $closeResp }}',
+                            '{{ $ft->remarks }}',
+                            '{{ $ft->report_date }}'
+                        ]);
+                    @endforeach
+                    worksheet.addRow([]);
                 @endif
 
 
@@ -1353,12 +1641,12 @@
                     datasets: [{
                         label: 'Efficiency (%)',
                         data: [
-                            efficiencyData ? efficiencyData.floor_1 * 100 : 0,
-                            efficiencyData ? efficiencyData.floor_2 * 100 : 0,
-                            efficiencyData ? efficiencyData.floor_3 * 100 : 0,
-                            efficiencyData ? efficiencyData.floor_4 * 100 : 0,
-                            efficiencyData ? efficiencyData.floor_5 * 100 : 0
-                        ],
+                                (efficiencyData && !isNaN(Number(efficiencyData.floor_1)) ? Number(efficiencyData.floor_1) * 100 : 0),
+                                (efficiencyData && !isNaN(Number(efficiencyData.floor_2)) ? Number(efficiencyData.floor_2) * 100 : 0),
+                                (efficiencyData && !isNaN(Number(efficiencyData.floor_3)) ? Number(efficiencyData.floor_3) * 100 : 0),
+                                (efficiencyData && !isNaN(Number(efficiencyData.floor_4)) ? Number(efficiencyData.floor_4) * 100 : 0),
+                                (efficiencyData && !isNaN(Number(efficiencyData.floor_5)) ? Number(efficiencyData.floor_5) * 100 : 0)
+                            ],
                         borderColor: '#2c6eb5',
                         backgroundColor: 'rgba(44, 110, 181, 0.1)',
                         tension: 0.3,

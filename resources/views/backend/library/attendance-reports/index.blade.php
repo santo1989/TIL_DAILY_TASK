@@ -150,6 +150,7 @@
                             <i class="fas fa-upload"></i> Upload
                         </button>
                     </form>
+                    <h1>type are = Lunch Out,Late Comer,To be Absent,On Leave</h1>
                 </div>
             </div>
         </div>
